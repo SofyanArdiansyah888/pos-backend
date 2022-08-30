@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// USER MODEL
+model User {
+  id    Int @default(autoincrement()) @id
+  email String  @unique
+  name  String?
+  password String?
+  role  UserRole @default(CASHIER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+enum UserRole {
+  ADMIN
+  CASHIER
+}
+
+model Client{
+  id    Int @default(autoincrement()) @id
+  email String  @unique
+  name  String?
+  phone String?
+  orders Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model Order{
+  id    Int @default(autoincrement()) @id
+  clientId Int
+  client Client @relation(fields: [clientId],references: [id])
+  orderNumber Int
+  totalItem Int
+  totalPayment BigInt
+  orderProduct OrderProduct[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model OrderProduct{
+  id    Int @default(autoincrement()) @id
+  orderId Int
+  order Order @relation(fields: [orderId],references: [id])
+  product Product[]
+  orderNumber String @unique
+  productName String
+  variantName String
+  amount Int
+  uom String
+  price BigInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model Product{
+  id    Int @default(autoincrement()) @id
+  productNumber String @unique
+  orderProductId Int
+  orderProduct OrderProduct @relation(fields: [orderProductId],references: [id])
+  variant Variant[]
+  name String
+  category String
+  brand String 
+  photo String
+  favourite Boolean @default(false)
+  price BigInt @default(0)
+  capital BigInt @default(0)
+  code String // SKU
+  isStock Boolean @default(false)
+  stock Int
+  minimalStock Int
+  uom String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model Variant{
+  id    Int @default(autoincrement()) @id
+  productId Int
+  product Product @relation(fields: [productId],references: [id])
+  name String
+  price BigInt @default(0)
+  capital BigInt @default(0)
+  code String // SKU
+  isStock Boolean @default(false)
+  stock Int
+  minimalStock Int
+  uom String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model Brand{
+  id    Int @default(autoincrement()) @id
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model Category{
+  id    Int @default(autoincrement()) @id
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model UOM {
+  id    Int @default(autoincrement()) @id
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model Tax{
+  id    Int @default(autoincrement()) @id
+  amount Int
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+model Discount{
+  id    Int @default(autoincrement()) @id
+  discountType PriceRole @default(FIXED)
+  amount BigInt @default(0)
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  deletedAt DateTime?
+}
+
+enum PriceRole {
+  FIXED
+  PERCENT
+}
+
