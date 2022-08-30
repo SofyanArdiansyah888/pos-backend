@@ -6,6 +6,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ClientModule } from './client/client.module';
 import { join } from 'path';
 
+import { PrismaModule } from './prisma/prisma.module';
+
+
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -15,6 +18,7 @@ import { join } from 'path';
       playground:true,
     }),
     ClientModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

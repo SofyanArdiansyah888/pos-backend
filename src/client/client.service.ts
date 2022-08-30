@@ -1,15 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+
 import { CreateClientInput } from './dto/create-client.input';
 import { UpdateClientInput } from './dto/update-client.input';
+import { ClientEntity } from './entities/client.entity';
 
 @Injectable()
 export class ClientService {
-  create(createClientInput: CreateClientInput) {
-    return 'This action adds a new client';
+
+  constructor(private prisma:PrismaService){
+
   }
 
-  findAll() {
-    return `This action returns all client`;
+  create(data: CreateClientInput):Promise<ClientEntity> {
+    return this.prisma.client.create({
+      data
+    })
+  }
+
+  findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.ClientWhereUniqueInput;
+    where?: Prisma.ClientWhereInput;
+    orderBy?: Prisma.ClientOrderByWithRelationInput;
+  }): Promise<ClientEntity[]> {
+    const { skip, take, cursor, where, orderBy } = params
+    return this.prisma.client.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
   }
 
   findOne(id: number) {
