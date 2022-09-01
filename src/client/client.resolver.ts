@@ -9,27 +9,34 @@ export class ClientResolver {
   constructor(private readonly clientService: ClientService) {}
 
   @Mutation(() => ClientEntity)
-  createClient(@Args('createClientInput') createClientInput: CreateClientInput) {
-    return this.clientService.create(createClientInput);
+  createClient(@Args('createClientInput') data: CreateClientInput) {
+    return this.clientService.create(data);
   }
 
-  @Query(() => [ClientEntity], { name: 'clients' })
-  findAll() {
-    return this.clientService.findAll({});
+  @Query(() => [ClientEntity])
+  clients() {
+    return this.clientService.findAll({
+      take:2
+    });
   }
 
-  @Query(() => ClientEntity, { name: 'client' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.clientService.findOne(id);
-  }
-
-  @Mutation(() => ClientEntity)
-  updateClient(@Args('updateClientInput') updateClientInput: UpdateClientInput) {
-    return this.clientService.update(updateClientInput.id, updateClientInput);
+  @Query(() => ClientEntity)
+  client(@Args('id', { type: () => Int }) id: number) {
+    return this.clientService.findOne({ id });
   }
 
   @Mutation(() => ClientEntity)
-  removeClient(@Args('id', { type: () => Int }) id: number) {
-    return this.clientService.remove(id);
+  updateClient(@Args('updateClientInput') data: UpdateClientInput) {
+    return this.clientService.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
+  }
+
+  @Mutation(() => ClientEntity)
+  deleteClient(@Args('id', { type: () => Int }) id: number) {
+    return this.clientService.delete({ id });
   }
 }

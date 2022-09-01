@@ -8,25 +8,24 @@ import { ClientEntity } from './entities/client.entity';
 
 @Injectable()
 export class ClientService {
+  constructor(private prisma: PrismaService) {}
 
-  constructor(private prisma:PrismaService){
-
+  async findOne(
+    where: Prisma.ClientWhereUniqueInput,
+  ): Promise<ClientEntity | null> {
+    return this.prisma.client.findUnique({
+      where,
+    });
   }
 
-  create(data: CreateClientInput):Promise<ClientEntity> {
-    return this.prisma.client.create({
-      data
-    })
-  }
-
-  findAll(params: {
+  async findAll(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.ClientWhereUniqueInput;
     where?: Prisma.ClientWhereInput;
     orderBy?: Prisma.ClientOrderByWithRelationInput;
   }): Promise<ClientEntity[]> {
-    const { skip, take, cursor, where, orderBy } = params
+    const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.client.findMany({
       skip,
       take,
@@ -36,15 +35,26 @@ export class ClientService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} client`;
+  async create(data: Prisma.UserCreateInput): Promise<ClientEntity> {
+    return this.prisma.client.create({
+      data,
+    });
   }
 
-  update(id: number, updateClientInput: UpdateClientInput) {
-    return `This action updates a #${id} client`;
+  async update(params: {
+    where: Prisma.UserWhereUniqueInput;
+    data: Prisma.UserUpdateInput;
+  }): Promise<ClientEntity> {
+    const { where, data } = params;
+    return this.prisma.client.update({
+      data,
+      where,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} client`;
+  async delete(where: Prisma.UserWhereUniqueInput): Promise<ClientEntity> {
+    return this.prisma.client.delete({
+      where,
+    });
   }
 }

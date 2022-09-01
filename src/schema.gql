@@ -5,16 +5,17 @@
 type ClientEntity {
   """Id Client"""
   id: Int!
-
-  """"""
   email: String!
-
-  """"""
   name: String!
-
-  """"""
   phone: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   clients: [ClientEntity!]!
@@ -24,7 +25,7 @@ type Query {
 type Mutation {
   createClient(createClientInput: CreateClientInput!): ClientEntity!
   updateClient(updateClientInput: UpdateClientInput!): ClientEntity!
-  removeClient(id: Int!): ClientEntity!
+  deleteClient(id: Int!): ClientEntity!
 }
 
 input CreateClientInput {
@@ -40,12 +41,14 @@ input CreateClientInput {
 
 input UpdateClientInput {
   """"""
-  email: String
+  email: String!
 
   """"""
-  name: String
+  name: String!
 
   """"""
-  phone: String
+  phone: String!
+
+  """"""
   id: Int!
 }

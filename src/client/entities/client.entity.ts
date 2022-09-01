@@ -1,21 +1,22 @@
-import { ObjectType, Field, Int,DateScalarMode } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class ClientEntity {
   @Field(() => Int, { description: 'Id Client' })
   id: number;
 
-  @Field({description:''})
+  @Field()
   email: string
 
-  @Field({description:''})
+  @Field()
   name: string
 
-  @Field({description:''})
+  @Field()
   phone: string
 
-  // @Field({description:''})
-  // orders: Order[]
-  
-  // orders Order[]
+  @Field()
+  createdAt: Date
+
+  @Field()
+  updatedAt: Date
 }
