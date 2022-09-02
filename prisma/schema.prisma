@@ -15,7 +15,6 @@ model User {
   role  UserRole @default(CASHIER)
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 enum UserRole {
@@ -31,7 +30,6 @@ model Client{
   orders Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model Order{
@@ -44,7 +42,6 @@ model Order{
   orderProduct OrderProduct[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model OrderProduct{
@@ -60,7 +57,6 @@ model OrderProduct{
   price BigInt
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model Product{
@@ -83,7 +79,6 @@ model Product{
   uom String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model Variant{
@@ -100,7 +95,6 @@ model Variant{
   uom String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model Brand{
@@ -108,7 +102,6 @@ model Brand{
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model Category{
@@ -116,7 +109,6 @@ model Category{
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model UOM {
@@ -124,7 +116,6 @@ model UOM {
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model Tax{
@@ -133,7 +124,6 @@ model Tax{
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 model Discount{
@@ -143,7 +133,6 @@ model Discount{
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
-  deletedAt DateTime?
 }
 
 enum PriceRole {

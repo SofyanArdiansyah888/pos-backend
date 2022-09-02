@@ -7,6 +7,11 @@ import { ClientModule } from './client/client.module';
 import { join } from 'path';
 
 import { PrismaModule } from './prisma/prisma.module';
+import { BrandModule } from './brand/brand.module';
+import { CategoryModule } from './category/category.module';
+import { UomModule } from './uom/uom.module';
+import { TaxModule } from './tax/tax.module';
+import { DiscountModule } from './discount/discount.module';
 
 
 @Module({
@@ -19,6 +24,11 @@ import { PrismaModule } from './prisma/prisma.module';
     }),
     ClientModule,
     PrismaModule,
+    BrandModule,
+    CategoryModule,
+    UomModule,
+    TaxModule,
+    DiscountModule,
   ],
   controllers: [AppController],
   providers: [AppService],

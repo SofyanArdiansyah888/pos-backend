@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
-import { CreateClientInput } from './dto/create-client.input';
-import { UpdateClientInput } from './dto/update-client.input';
 import { ClientEntity } from './entities/client.entity';
 
 @Injectable()
@@ -25,13 +23,8 @@ export class ClientService {
     where?: Prisma.ClientWhereInput;
     orderBy?: Prisma.ClientOrderByWithRelationInput;
   }): Promise<ClientEntity[]> {
-    const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.client.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
+      ...params,
     });
   }
 
@@ -45,10 +38,8 @@ export class ClientService {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
   }): Promise<ClientEntity> {
-    const { where, data } = params;
     return this.prisma.client.update({
-      data,
-      where,
+      ...params,
     });
   }
 

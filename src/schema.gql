@@ -17,15 +17,73 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type BrandEntity {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CategoryEntity {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UomEntity {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TaxEntity {
+  id: Int!
+  amount: Float!
+  description: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Discount {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   clients: [ClientEntity!]!
   client(id: Int!): ClientEntity!
+  brands: [BrandEntity!]!
+  brand(id: Float!): BrandEntity!
+  categories: [CategoryEntity!]!
+  category(id: Float!): CategoryEntity!
+  uoms: [UomEntity!]!
+  uom(id: Float!): UomEntity!
+  taxes: [TaxEntity!]!
+  tax(id: Float!): TaxEntity!
+  discount(id: Int!): Discount!
 }
 
 type Mutation {
   createClient(createClientInput: CreateClientInput!): ClientEntity!
   updateClient(updateClientInput: UpdateClientInput!): ClientEntity!
-  deleteClient(id: Int!): ClientEntity!
+  deleteClient(id: DeleteClientInput!): ClientEntity!
+  createBrand(createBrandInput: CreateBrandInput!): BrandEntity!
+  updateBrand(updateBrandInput: UpdateBrandInput!): BrandEntity!
+  deleteBrand(id: DeleteBrandInput!): BrandEntity!
+  createCategory(createCategoryInput: CreateCategoryInput!): CategoryEntity!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryEntity!
+  deleteCategory(id: DeleteCategoryInput!): CategoryEntity!
+  createUom(createUomInput: CreateUomInput!): UomEntity!
+  updateUom(updateUomInput: UpdateUomInput!): UomEntity!
+  deleteUom(id: DeleteUomInput!): UomEntity!
+  createTax(createTaxInput: CreateTaxInput!): TaxEntity!
+  updateTax(updateTaxInput: UpdateTaxInput!): TaxEntity!
+  deleteTax(id: DeleteTaxInput!): TaxEntity!
+  createDiscount(createDiscountInput: CreateDiscountInput!): Discount!
+  updateDiscount(updateDiscountInput: UpdateDiscountInput!): Discount!
+  removeDiscount(id: Int!): Discount!
 }
 
 input CreateClientInput {
@@ -48,7 +106,74 @@ input UpdateClientInput {
 
   """"""
   phone: String!
+  id: Float!
+}
 
-  """"""
+input DeleteClientInput {
+  id: Float!
+}
+
+input CreateBrandInput {
+  name: String!
+}
+
+input UpdateBrandInput {
+  name: String!
+  id: Float!
+}
+
+input DeleteBrandInput {
+  id: Float!
+}
+
+input CreateCategoryInput {
+  name: String!
+}
+
+input UpdateCategoryInput {
+  name: String!
+  id: Int!
+}
+
+input DeleteCategoryInput {
+  id: Float!
+}
+
+input CreateUomInput {
+  name: String!
+}
+
+input UpdateUomInput {
+  name: String
+  id: Int!
+}
+
+input DeleteUomInput {
+  id: Float!
+}
+
+input CreateTaxInput {
+  amount: Float!
+  description: String!
+}
+
+input UpdateTaxInput {
+  amount: Float!
+  description: String!
+  id: Float!
+}
+
+input DeleteTaxInput {
+  id: Float!
+}
+
+input CreateDiscountInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateDiscountInput {
+  """Example field (placeholder)"""
+  exampleField: Int
   id: Int!
 }

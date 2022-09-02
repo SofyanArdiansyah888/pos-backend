@@ -1,22 +1,21 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 @ObjectType()
-export class ClientEntity {
-  @Field(() => Int, { description: 'Id Client' })
+export class TaxEntity {
+  @Field(() => Int)
   id: number;
 
   @Field()
-  email: string
+  amount:number
 
   @Field()
-  name: string
-
-  @Field()
-  phone: string
+  description:string
 
   @Field()
   createdAt?:Date
 
   @Field()
   updatedAt?:Date
+
+
 }
