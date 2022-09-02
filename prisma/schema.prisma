@@ -38,7 +38,7 @@ model Order{
   client Client @relation(fields: [clientId],references: [id])
   orderNumber Int
   totalItem Int
-  totalPayment BigInt
+  totalPayment Int
   orderProduct OrderProduct[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
@@ -54,7 +54,7 @@ model OrderProduct{
   variantName String
   amount Int
   uom String
-  price BigInt
+  price Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
 }
@@ -70,8 +70,8 @@ model Product{
   brand String 
   photo String
   favourite Boolean @default(false)
-  price BigInt @default(0)
-  capital BigInt @default(0)
+  price Int @default(0)
+  capital Int @default(0)
   code String // SKU
   isStock Boolean @default(false)
   stock Int
@@ -86,8 +86,8 @@ model Variant{
   productId Int
   product Product @relation(fields: [productId],references: [id])
   name String
-  price BigInt @default(0)
-  capital BigInt @default(0)
+  price Int @default(0)
+  capital Int @default(0)
   code String // SKU
   isStock Boolean @default(false)
   stock Int
@@ -129,7 +129,7 @@ model Tax{
 model Discount{
   id    Int @default(autoincrement()) @id
   discountType PriceRole @default(FIXED)
-  amount BigInt @default(0)
+  amount Int @default(0)
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())

@@ -40,29 +40,39 @@ type UomEntity {
 
 type TaxEntity {
   id: Int!
-  amount: Float!
+  amount: Int!
   description: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type Discount {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type DiscountEntity {
+  id: Int!
+  discountType: PriceRole!
+  amount: Int!
+  description: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum PriceRole {
+  FIXED
+  PERCENT
 }
 
 type Query {
   clients: [ClientEntity!]!
   client(id: Int!): ClientEntity!
   brands: [BrandEntity!]!
-  brand(id: Float!): BrandEntity!
+  brand(id: Int!): BrandEntity!
   categories: [CategoryEntity!]!
-  category(id: Float!): CategoryEntity!
+  category(id: Int!): CategoryEntity!
   uoms: [UomEntity!]!
-  uom(id: Float!): UomEntity!
+  uom(id: Int!): UomEntity!
   taxes: [TaxEntity!]!
-  tax(id: Float!): TaxEntity!
-  discount(id: Int!): Discount!
+  tax(id: Int!): TaxEntity!
+  discounts: [DiscountEntity!]!
+  discount(id: Int!): DiscountEntity!
 }
 
 type Mutation {
@@ -81,9 +91,9 @@ type Mutation {
   createTax(createTaxInput: CreateTaxInput!): TaxEntity!
   updateTax(updateTaxInput: UpdateTaxInput!): TaxEntity!
   deleteTax(id: DeleteTaxInput!): TaxEntity!
-  createDiscount(createDiscountInput: CreateDiscountInput!): Discount!
-  updateDiscount(updateDiscountInput: UpdateDiscountInput!): Discount!
-  removeDiscount(id: Int!): Discount!
+  createDiscount(createDiscountInput: CreateDiscountInput!): DiscountEntity!
+  updateDiscount(updateDiscountInput: UpdateDiscountInput!): DiscountEntity!
+  deleteDiscount(id: DeleteDiscountInput!): DiscountEntity!
 }
 
 input CreateClientInput {
@@ -106,11 +116,11 @@ input UpdateClientInput {
 
   """"""
   phone: String!
-  id: Float!
+  id: Int!
 }
 
 input DeleteClientInput {
-  id: Float!
+  id: Int!
 }
 
 input CreateBrandInput {
@@ -119,11 +129,11 @@ input CreateBrandInput {
 
 input UpdateBrandInput {
   name: String!
-  id: Float!
+  id: Int!
 }
 
 input DeleteBrandInput {
-  id: Float!
+  id: Int!
 }
 
 input CreateCategoryInput {
@@ -136,7 +146,7 @@ input UpdateCategoryInput {
 }
 
 input DeleteCategoryInput {
-  id: Float!
+  id: Int!
 }
 
 input CreateUomInput {
@@ -149,31 +159,37 @@ input UpdateUomInput {
 }
 
 input DeleteUomInput {
-  id: Float!
+  id: Int!
 }
 
 input CreateTaxInput {
-  amount: Float!
+  amount: Int!
   description: String!
 }
 
 input UpdateTaxInput {
-  amount: Float!
+  amount: Int!
   description: String!
-  id: Float!
+  id: Int!
 }
 
 input DeleteTaxInput {
-  id: Float!
+  id: Int!
 }
 
 input CreateDiscountInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  discountType: String!
+  amount: Int!
+  description: String!
 }
 
 input UpdateDiscountInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  discountType: String!
+  amount: Int!
+  description: String!
+  id: Int!
+}
+
+input DeleteDiscountInput {
   id: Int!
 }

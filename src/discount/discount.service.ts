@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDiscountInput } from './dto/create-discount.input';
-import { UpdateDiscountInput } from './dto/update-discount.input';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { DiscountEntity } from './entities/discount.entity';
 
 @Injectable()
 export class DiscountService {
-  create(createDiscountInput: CreateDiscountInput) {
-    return 'This action adds a new discount';
+  constructor(private readonly prisma: PrismaService) {}
+
+  create(data: Prisma.DiscountCreateInput) {
+    return this.prisma.discount.create({ data });
   }
 
-  findAll() {
-    return `This action returns all discount`;
+  findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.DiscountWhereUniqueInput;
+    where?: Prisma.DiscountWhereInput;
+    orderBy?: Prisma.DiscountOrderByWithRelationInput;
+  }){
+    return this.prisma.discount.findMany({
+      ...params,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} discount`;
+  findOne(where: Prisma.DiscountWhereUniqueInput) {
+    return this.prisma.discount.findUnique({ where });
   }
 
-  update(id: number, updateDiscountInput: UpdateDiscountInput) {
-    return `This action updates a #${id} discount`;
+  update(params: {
+    where: Prisma.DiscountWhereUniqueInput;
+    data: Prisma.DiscountUpdateInput;
+  }) {
+    return this.prisma.discount.update({
+      ...params,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} discount`;
+  remove(where: Prisma.DiscountWhereUniqueInput) {
+    return this.prisma.discount.delete({
+      where,
+    });
   }
 }
