@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { DiscountEntity } from './entities/discount.entity';
 
 @Injectable()
 export class DiscountService {

@@ -1,10 +1,10 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { DiscountService } from './discount.service';
 import { DiscountEntity } from './entities/discount.entity';
-import { CreateDiscountInput } from './dto/create-discount.input';
-import { UpdateDiscountInput } from './dto/update-discount.input';
+import { CreateDiscountInput } from './input/create-discount.input';
+import { UpdateDiscountInput } from './input/update-discount.input';
 import { Prisma } from '@prisma/client';
-import { DeleteDiscountInput } from './dto/delete-discount.input';
+import { DeleteDiscountInput } from './input/delete-discount.input';
 
 @Resolver(() => DiscountEntity)
 export class DiscountResolver {

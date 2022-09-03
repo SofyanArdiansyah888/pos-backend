@@ -12,6 +12,11 @@ import { CategoryModule } from './category/category.module';
 import { UomModule } from './uom/uom.module';
 import { TaxModule } from './tax/tax.module';
 import { DiscountModule } from './discount/discount.module';
+import { ProductModule } from './product/product.module';
+import { VariantModule } from './variant/variant.module';
+import { OrderModule } from './order/order.module';
+import { OrderProductModule } from './order-product/order-product.module';
+import { UserModule } from './user/user.module';
 
 
 @Module({
@@ -32,6 +37,11 @@ import { DiscountModule } from './discount/discount.module';
     UomModule,
     TaxModule,
     DiscountModule,
+    ProductModule,
+    VariantModule,
+    OrderModule,
+    OrderProductModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
