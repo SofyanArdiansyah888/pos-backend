@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import * as argon2 from 'argon2';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(data: Prisma.UserCreateInput) {
+    let password = await argon2.hash(data.password);
+    return this.prisma.user.create({
+      data: {
+        ...data,
+        password,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.UserWhereUniqueInput;
+    where?: Prisma.UserWhereInput;
+    orderBy?: Prisma.UserOrderByWithRelationInput;
+  }) {
+    return this.prisma.user.findMany({ ...params });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(where: Prisma.UserWhereUniqueInput) {
+    return this.prisma.user.findUnique({ where });
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  update(params: {
+    where: Prisma.UserWhereUniqueInput;
+    data: Prisma.UserUpdateInput;
+  }) {
+    return this.prisma.user.update({ ...params });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(where: Prisma.UserWhereUniqueInput) {
+    return this.prisma.user.delete({ where });
   }
 }

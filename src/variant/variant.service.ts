@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVariantInput } from './dto/create-variant.input';
-import { UpdateVariantInput } from './dto/update-variant.input';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class VariantService {
-  create(createVariantInput: CreateVariantInput) {
-    return 'This action adds a new variant';
+  constructor(private readonly prisma:PrismaService){}
+
+  create(data: Prisma.VariantCreateInput) {
+    return this.prisma.variant.create({data});
   }
 
-  findAll() {
-    return `This action returns all variant`;
+  findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.VariantWhereUniqueInput;
+    where?: Prisma.VariantWhereInput;
+    orderBy?: Prisma.VariantOrderByWithRelationInput;
+  }) {
+    return this.prisma.variant.findMany({ ...params });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} variant`;
+  findOne(where:Prisma.VariantWhereUniqueInput) {
+    return this.prisma.variant.findUnique({ where });
   }
 
-  update(id: number, updateVariantInput: UpdateVariantInput) {
-    return `This action updates a #${id} variant`;
+  update(params:{
+    where:Prisma.VariantWhereUniqueInput,
+    data: Prisma.VariantUpdateInput
+  }) {
+    return this.prisma.variant.update({ ...params });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} variant`;
+  remove(where:Prisma.VariantWhereUniqueInput) {
+    return this.prisma.variant.delete({ where });
   }
 }

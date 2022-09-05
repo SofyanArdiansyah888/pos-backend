@@ -60,8 +60,14 @@ enum PriceRole {
   PERCENT
 }
 
+type Variant {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type ProductEntity {
   id: Int!
+  variant: Variant!
   productNumber: String!
   name: String!
   category: String!
@@ -78,11 +84,6 @@ type ProductEntity {
   updateddAt: DateTime!
 }
 
-type Variant {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Order {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -93,9 +94,15 @@ type OrderProduct {
   exampleField: Int!
 }
 
-type User {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type UserEntity {
+  """Id Client"""
+  id: Int!
+  email: String!
+  name: String!
+  password: String!
+  role: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
@@ -116,7 +123,8 @@ type Query {
   variant(id: Int!): Variant!
   order(id: Int!): Order!
   orderProduct(id: Int!): OrderProduct!
-  user(id: Int!): User!
+  users: [UserEntity!]!
+  user(id: Int!): UserEntity!
 }
 
 type Mutation {
@@ -140,7 +148,7 @@ type Mutation {
   deleteDiscount(id: DeleteDiscountInput!): DiscountEntity!
   createProduct(createProductInput: CreateProductInput!): ProductEntity!
   updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
-  deleteProduct(id: Int!): ProductEntity!
+  deleteProduct(id: DeleteProductInput!): ProductEntity!
   createVariant(createVariantInput: CreateVariantInput!): Variant!
   updateVariant(updateVariantInput: UpdateVariantInput!): Variant!
   removeVariant(id: Int!): Variant!
@@ -150,9 +158,9 @@ type Mutation {
   createOrderProduct(createOrderProductInput: CreateOrderProductInput!): OrderProduct!
   updateOrderProduct(updateOrderProductInput: UpdateOrderProductInput!): OrderProduct!
   removeOrderProduct(id: Int!): OrderProduct!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  createUser(createUserInput: CreateUserInput!): UserEntity!
+  updateUser(updateUserInput: UpdateUserInput!): UserEntity!
+  deleteUser(id: DeleteUserInput!): UserEntity!
 }
 
 input CreateClientInput {
@@ -254,13 +262,38 @@ input DeleteDiscountInput {
 }
 
 input CreateProductInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+  category: String!
+  brand: String!
+  photo: String!
+  favourite: Boolean!
+  price: Int!
+  stock: Int!
+  capital: Int!
+  code: String!
+  isStock: Boolean!
+  minimalStock: Int!
+  uom: String!
 }
 
 input UpdateProductInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  name: String!
+  category: String!
+  brand: String!
+  photo: String!
+  favourite: Boolean!
+  price: Int!
+  stock: Int!
+  capital: Int!
+  code: String!
+  isStock: Boolean!
+  minimalStock: Int!
+  uom: String!
+  id: Int!
+  productNumber: String!
+}
+
+input DeleteProductInput {
   id: Int!
 }
 
@@ -298,12 +331,20 @@ input UpdateOrderProductInput {
 }
 
 input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  email: String!
+  name: String!
+  password: String!
+  role: String!
 }
 
 input UpdateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  email: String!
+  name: String!
+  password: String
+  role: String!
+  id: Int!
+}
+
+input DeleteUserInput {
   id: Int!
 }

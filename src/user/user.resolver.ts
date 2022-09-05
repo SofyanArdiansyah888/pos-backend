@@ -1,35 +1,49 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { UserService } from './user.service';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
 import { UserEntity } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { CreateUserInput } from './input/create-user.input';
+import { DeleteUserInput } from './input/delete-user.input';
+import { UpdateUserInput } from './input/update-user.input';
+import { UserService } from './user.service';
+
 
 @Resolver(() => UserEntity)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Mutation(() => UserEntity)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput);
+  async createUser(@Args('createUserInput') data: CreateUserInput) {
+  
+    return this.userService.create(data);
   }
 
-  @Query(() => [UserEntity], { name: 'user' })
-  findAll() {
-    return this.userService.findAll();
+  @Query(() => [UserEntity])
+  users() {
+    return this.userService.findAll({
+      take: 10,
+      orderBy: {
+        id: Prisma.SortOrder.desc,
+      },
+    });
   }
 
-  @Query(() => UserEntity, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.userService.findOne(id);
+  @Query(() => UserEntity)
+  user(@Args('id',{ type: () => Int }) id: number) {
+    return this.userService.findOne({id});
   }
 
   @Mutation(() => UserEntity)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.update(updateUserInput.id, updateUserInput);
+  updateUser(@Args('updateUserInput') data: UpdateUserInput) {
+    return this.userService.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
   }
 
   @Mutation(() => UserEntity)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.userService.remove(id);
+  deleteUser(@Args('id') {id}: DeleteUserInput) {
+    return this.userService.remove({ id });
   }
 }

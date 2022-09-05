@@ -1,17 +1,21 @@
+import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
+import { IsNotEmpty, IsNumber, MinLength } from 'class-validator';
 import { CreateProductInput } from './create-product.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
-import { Variant } from '@prisma/client';
 
 @InputType()
 export class UpdateProductInput extends PartialType(CreateProductInput) {
   @Field(() => Int)
+  @IsNotEmpty()
   id: number;
 
   @Field()
-  productNumber:string
+  @IsNotEmpty()
+  @MinLength(2)
+  name:string
 
   @Field()
-  name:string
+  @IsNotEmpty()
+  productNumber:string
 
   @Field()
   category:string
@@ -20,27 +24,43 @@ export class UpdateProductInput extends PartialType(CreateProductInput) {
   brand:string
   
   @Field()
+  @IsNotEmpty()
   photo:string
    
   @Field()
+  @IsNotEmpty()
   favourite:boolean
 
   @Field()
+  @IsNotEmpty()
+  @IsNumber()
   price:number
 
   @Field()
+  @IsNotEmpty()
+  @IsNumber()
+  stock:number
+
+  @Field()
+  @IsNotEmpty()
+  @IsNumber()
   capital:number
 
   @Field()
   code:string
 
   @Field()
+  @IsNotEmpty()
   isStock:boolean
 
   @Field()
+  @IsNotEmpty()
+  @IsNumber()
   minimalStock:number
 
   @Field()
+  @IsNotEmpty()
   uom:string
+
 
 }

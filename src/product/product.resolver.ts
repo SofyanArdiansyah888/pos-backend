@@ -1,8 +1,10 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ProductService } from './product.service';
 import { ProductEntity } from './entities/product.entity';
-import { CreateProductInput } from './dto/create-product.input';
-import { UpdateProductInput } from './dto/update-product.input';
+import { CreateProductInput } from './input/create-product.input';
+import { UpdateProductInput } from './input/update-product.input';
+import { Prisma } from '@prisma/client';
+import { DeleteProductInput } from './input/delete-product.input';
 
 @Resolver(() => ProductEntity)
 export class ProductResolver {
@@ -10,26 +12,38 @@ export class ProductResolver {
 
   @Mutation(() => ProductEntity)
   createProduct(@Args('createProductInput') data: CreateProductInput) {
-    return this.productService.create(data);
+    let temp = {
+      ...data,
+      productNumber:"xxx"
+    }
+    return this.productService.create(temp);
   }
 
   @Query(() => [ProductEntity])
   products() {
-    return this.productService.findAll();
+    return this.productService.findAll({
+      take: 10,
+      orderBy: { id: Prisma.SortOrder.desc },
+    });
   }
 
   @Query(() => ProductEntity)
-  product(@Args('id', { type: () => Int }) id: number) {
-    return this.productService.findOne(id);
+  product(@Args('id') id: number) {
+    return this.productService.findOne({ id });
   }
 
   @Mutation(() => ProductEntity)
-  updateProduct(@Args('updateProductInput') updateProductInput: UpdateProductInput) {
-    return this.productService.update(updateProductInput.id, updateProductInput);
+  updateProduct(@Args('updateProductInput') data: UpdateProductInput) {
+    return this.productService.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
   }
 
   @Mutation(() => ProductEntity)
-  deleteProduct(@Args('id', { type: () => Int }) id: number) {
-    return this.productService.remove(id);
+  deleteProduct(@Args('id') { id }: DeleteProductInput) {
+    return this.productService.remove({ id });
   }
 }

@@ -1,35 +1,43 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { VariantService } from './variant.service';
-import { Variant } from './entities/variant.entity';
-import { CreateVariantInput } from './dto/create-variant.input';
-import { UpdateVariantInput } from './dto/update-variant.input';
+import { VariantEntity } from './entities/variant.entity';
+import { CreateVariantInput } from './input/create-variant.input';
+import { UpdateVariantInput } from './input/update-variant.input';
+import { Prisma } from '@prisma/client';
+import { DeleteVariantInput } from './input/delete-variant.input';
 
-@Resolver(() => Variant)
+@Resolver(() => VariantEntity)
 export class VariantResolver {
   constructor(private readonly variantService: VariantService) {}
 
-  @Mutation(() => Variant)
-  createVariant(@Args('createVariantInput') createVariantInput: CreateVariantInput) {
-    return this.variantService.create(createVariantInput);
+  @Mutation(() => VariantEntity)
+  createVariant(@Args('createVariantInput') data: CreateVariantInput) {
+    // return this.variantService.create({data});
   }
 
-  @Query(() => [Variant], { name: 'variant' })
-  findAll() {
-    return this.variantService.findAll();
+  @Query(() => [VariantEntity])
+  variants() {
+    return this.variantService.findAll({
+      take:10,
+      orderBy:{id:Prisma.SortOrder.desc}
+    });
   }
 
-  @Query(() => Variant, { name: 'variant' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.variantService.findOne(id);
+  @Query(() => VariantEntity)
+  variant(@Args('id', { type: () => Int }) id: number) {
+    return this.variantService.findOne({ id });
   }
 
-  @Mutation(() => Variant)
-  updateVariant(@Args('updateVariantInput') updateVariantInput: UpdateVariantInput) {
-    return this.variantService.update(updateVariantInput.id, updateVariantInput);
+  @Mutation(() => VariantEntity)
+  updateVariant(@Args('updateVariantInput') data: UpdateVariantInput) {
+    return this.variantService.update({
+      where:{id:data.id},
+      data
+    });
   }
 
-  @Mutation(() => Variant)
-  removeVariant(@Args('id', { type: () => Int }) id: number) {
-    return this.variantService.remove(id);
+  @Mutation(() => VariantEntity)
+  deleteVariant(@Args('id', { type: () => Int }) {id}: DeleteVariantInput) {
+    return this.variantService.remove({id});
   }
 }
