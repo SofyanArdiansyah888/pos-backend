@@ -17,7 +17,9 @@ export class ProductService {
     where?: Prisma.ProductWhereInput;
     orderBy?: Prisma.ProductOrderByWithRelationInput;
   }) {
-    return this.prisma.product.findMany({ ...params });
+    return this.prisma.product.findMany({ ...params,include:{
+      variant:true
+    } });
   }
 
   findOne(where: Prisma.ProductWhereUniqueInput) {

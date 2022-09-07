@@ -11,12 +11,12 @@ export class UpdateVariantInput extends PartialType(CreateVariantInput) {
 
   @Field()
   @IsNotEmpty()
-  @IsNumber()
-  productId: number;
+  name: string;
 
   @Field()
   @IsNotEmpty()
-  name: string;
+  @IsNumber()
+  productId:number
 
   @Field()
   @IsNotEmpty()

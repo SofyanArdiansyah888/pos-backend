@@ -1,5 +1,5 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Product } from '@prisma/client';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { ProductEntity } from '../../product/entities/product.entity';
 
 @ObjectType()
 export class VariantEntity {
@@ -7,10 +7,10 @@ export class VariantEntity {
   id: number;
 
   @Field()
-  productId: number;
+  productId?: number;
 
-  @Field()
-  product: Product;
+  @Field(() => ProductEntity, {nullable:true})
+  product: ProductEntity;
 
   @Field()
   name: string;

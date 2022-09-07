@@ -60,14 +60,23 @@ enum PriceRole {
   PERCENT
 }
 
-type Variant {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type VariantEntity {
+  id: Int!
+  productId: Int!
+  product: ProductEntity
+  name: String!
+  price: Int!
+  capital: Int!
+  code: String!
+  isStock: Boolean!
+  stock: Int!
+  minimalStock: Int!
+  uom: String!
 }
 
 type ProductEntity {
   id: Int!
-  variant: Variant!
+  variant: VariantEntity!
   productNumber: String!
   name: String!
   category: String!
@@ -120,7 +129,8 @@ type Query {
   discount(id: Int!): DiscountEntity!
   products: [ProductEntity!]!
   product(id: Int!): ProductEntity!
-  variant(id: Int!): Variant!
+  variants: [VariantEntity!]
+  variant(id: Int!): VariantEntity
   order(id: Int!): Order!
   orderProduct(id: Int!): OrderProduct!
   users: [UserEntity!]!
@@ -149,9 +159,9 @@ type Mutation {
   createProduct(createProductInput: CreateProductInput!): ProductEntity!
   updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
   deleteProduct(id: DeleteProductInput!): ProductEntity!
-  createVariant(createVariantInput: CreateVariantInput!): Variant!
-  updateVariant(updateVariantInput: UpdateVariantInput!): Variant!
-  removeVariant(id: Int!): Variant!
+  createVariant(createVariantInput: CreateVariantInput!): VariantEntity!
+  updateVariant(updateVariantInput: UpdateVariantInput!): VariantEntity!
+  deleteVariant(id: Int!): VariantEntity!
   createOrder(createOrderInput: CreateOrderInput!): Order!
   updateOrder(updateOrderInput: UpdateOrderInput!): Order!
   removeOrder(id: Int!): Order!
@@ -298,13 +308,27 @@ input DeleteProductInput {
 }
 
 input CreateVariantInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+  productId: Int!
+  price: Int!
+  capital: Int!
+  code: String!
+  isStock: Boolean!
+  stock: Int!
+  minimalStock: Int!
+  uom: String!
 }
 
 input UpdateVariantInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  name: String!
+  productId: Int!
+  price: Int!
+  capital: Int!
+  code: String!
+  isStock: Boolean!
+  stock: Int!
+  minimalStock: Int!
+  uom: String!
   id: Int!
 }
 

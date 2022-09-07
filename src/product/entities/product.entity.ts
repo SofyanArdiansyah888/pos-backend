@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Variant } from '@prisma/client';
-import { VariantEntity } from 'src/variant/entities/variant.entity';
+import { VariantEntity } from '../../variant/entities/variant.entity';
 
 
 
@@ -9,8 +9,9 @@ export class ProductEntity {
   @Field(() => Int)
   id: number;
 
-  @Field()
-  variant:VariantEntity
+  @Field(() => VariantEntity)
+  variant:Variant
+
 
   // @Field()
   // orderProduct:[OrderProduct]

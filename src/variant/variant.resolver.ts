@@ -3,7 +3,7 @@ import { VariantService } from './variant.service';
 import { VariantEntity } from './entities/variant.entity';
 import { CreateVariantInput } from './input/create-variant.input';
 import { UpdateVariantInput } from './input/update-variant.input';
-import { Prisma } from '@prisma/client';
+import { prisma, Prisma } from '@prisma/client';
 import { DeleteVariantInput } from './input/delete-variant.input';
 
 @Resolver(() => VariantEntity)
@@ -12,10 +12,12 @@ export class VariantResolver {
 
   @Mutation(() => VariantEntity)
   createVariant(@Args('createVariantInput') data: CreateVariantInput) {
-    // return this.variantService.create({data});
+    return this.variantService.create({
+      ...data
+    });
   }
 
-  @Query(() => [VariantEntity])
+  @Query(() => [VariantEntity],{nullable:true})
   variants() {
     return this.variantService.findAll({
       take:10,
@@ -23,7 +25,7 @@ export class VariantResolver {
     });
   }
 
-  @Query(() => VariantEntity)
+  @Query(() => VariantEntity, {nullable:true})
   variant(@Args('id', { type: () => Int }) id: number) {
     return this.variantService.findOne({ id });
   }

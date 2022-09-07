@@ -12,6 +12,11 @@ export class CreateVariantInput {
   @Field()
   @IsNotEmpty()
   @IsNumber()
+  productId:number
+
+  @Field()
+  @IsNotEmpty()
+  @IsNumber()
   price: number;
 
   @Field()
