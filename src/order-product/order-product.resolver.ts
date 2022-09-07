@@ -1,34 +1,34 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { OrderProductService } from './order-product.service';
-import { OrderProduct } from './entities/order-product.entity';
-import { CreateOrderProductInput } from './dto/create-order-product.input';
-import { UpdateOrderProductInput } from './dto/update-order-product.input';
+import { OrderProductEntity } from './entities/order-product.entity';
+import { CreateOrderProductInput } from './input/create-order-product.input';
+import { UpdateOrderProductInput } from './input/update-order-product.input';
 
-@Resolver(() => OrderProduct)
+@Resolver(() => OrderProductEntity)
 export class OrderProductResolver {
   constructor(private readonly orderProductService: OrderProductService) {}
 
-  @Mutation(() => OrderProduct)
+  @Mutation(() => OrderProductEntity)
   createOrderProduct(@Args('createOrderProductInput') createOrderProductInput: CreateOrderProductInput) {
     return this.orderProductService.create(createOrderProductInput);
   }
 
-  @Query(() => [OrderProduct], { name: 'orderProduct' })
+  @Query(() => [OrderProductEntity], { name: 'orderProduct' })
   findAll() {
     return this.orderProductService.findAll();
   }
 
-  @Query(() => OrderProduct, { name: 'orderProduct' })
+  @Query(() => OrderProductEntity, { name: 'orderProduct' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.orderProductService.findOne(id);
   }
 
-  @Mutation(() => OrderProduct)
+  @Mutation(() => OrderProductEntity)
   updateOrderProduct(@Args('updateOrderProductInput') updateOrderProductInput: UpdateOrderProductInput) {
     return this.orderProductService.update(updateOrderProductInput.id, updateOrderProductInput);
   }
 
-  @Mutation(() => OrderProduct)
+  @Mutation(() => OrderProductEntity)
   removeOrderProduct(@Args('id', { type: () => Int }) id: number) {
     return this.orderProductService.remove(id);
   }

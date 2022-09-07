@@ -34,9 +34,9 @@ model Client{
 
 model Order{
   id    Int @default(autoincrement()) @id
-  clientId Int
-  client Client @relation(fields: [clientId],references: [id])
-  orderNumber Int
+  clientId Int?
+  client Client? @relation(fields: [clientId],references: [id])
+  orderNumber String
   totalItem Int
   totalPayment Int
   orderProduct OrderProduct[]

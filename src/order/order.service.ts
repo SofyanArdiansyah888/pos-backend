@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderInput } from './dto/create-order.input';
-import { UpdateOrderInput } from './dto/update-order.input';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class OrderService {
-  create(createOrderInput: CreateOrderInput) {
-    return 'This action adds a new order';
+  constructor(private readonly prisma: PrismaService) {}
+
+  create(data: Prisma.OrderCreateInput) {
+    return this.prisma.order.create({ data });
   }
 
-  findAll() {
-    return `This action returns all order`;
+  findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.OrderWhereUniqueInput;
+    where?: Prisma.OrderWhereInput;
+    orderBy?: Prisma.OrderOrderByWithRelationInput;
+  }) {
+    return this.prisma.order.findMany({
+      ...params,
+      include: {
+        // orderProduct: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  findOne(where: Prisma.OrderWhereUniqueInput) {
+    return this.prisma.order.findUnique({ where });
   }
 
-  update(id: number, updateOrderInput: UpdateOrderInput) {
-    return `This action updates a #${id} order`;
+  update(params: {
+    where: Prisma.OrderWhereUniqueInput;
+    data: Prisma.OrderUpdateInput;
+  }) {
+    return this.prisma.order.update({ ...params });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  remove(where: Prisma.OrderWhereUniqueInput) {
+    return this.prisma.order.delete({ where });
   }
 }

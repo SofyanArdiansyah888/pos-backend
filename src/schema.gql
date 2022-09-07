@@ -76,7 +76,7 @@ type VariantEntity {
 
 type ProductEntity {
   id: Int!
-  variant: VariantEntity!
+  variant: VariantEntity
   productNumber: String!
   name: String!
   category: String!
@@ -93,14 +93,30 @@ type ProductEntity {
   updateddAt: DateTime!
 }
 
-type Order {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type OrderProductEntity {
+  id: Int!
+  productId: Int!
+  orderId: Int!
+  orderNumber: String!
+  productName: String!
+  variantName: String!
+  amount: Int!
+  uom: String!
+  price: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
-type OrderProduct {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type OrderEntity {
+  id: Int!
+  clientId: Int!
+  client: ClientEntity
+  orderNumber: String!
+  totalItem: Int!
+  totalPayment: Int!
+  orderProduct: [OrderProductEntity!]
+  createdAt: DateTime!
+  updateddAt: DateTime!
 }
 
 type UserEntity {
@@ -131,8 +147,9 @@ type Query {
   product(id: Int!): ProductEntity!
   variants: [VariantEntity!]
   variant(id: Int!): VariantEntity
-  order(id: Int!): Order!
-  orderProduct(id: Int!): OrderProduct!
+  orders: [OrderEntity!]!
+  order(id: Int!): OrderEntity!
+  orderProduct(id: Int!): OrderProductEntity!
   users: [UserEntity!]!
   user(id: Int!): UserEntity!
 }
@@ -162,12 +179,12 @@ type Mutation {
   createVariant(createVariantInput: CreateVariantInput!): VariantEntity!
   updateVariant(updateVariantInput: UpdateVariantInput!): VariantEntity!
   deleteVariant(id: Int!): VariantEntity!
-  createOrder(createOrderInput: CreateOrderInput!): Order!
-  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
-  removeOrder(id: Int!): Order!
-  createOrderProduct(createOrderProductInput: CreateOrderProductInput!): OrderProduct!
-  updateOrderProduct(updateOrderProductInput: UpdateOrderProductInput!): OrderProduct!
-  removeOrderProduct(id: Int!): OrderProduct!
+  createOrder(createOrderInput: CreateOrderInput!): OrderEntity!
+  updateOrder(updateOrderInput: UpdateOrderInput!): OrderEntity!
+  removeOrder(id: DeleteOrderInput!): OrderEntity!
+  createOrderProduct(createOrderProductInput: CreateOrderProductInput!): OrderProductEntity!
+  updateOrderProduct(updateOrderProductInput: UpdateOrderProductInput!): OrderProductEntity!
+  removeOrderProduct(id: Int!): OrderProductEntity!
   createUser(createUserInput: CreateUserInput!): UserEntity!
   updateUser(updateUserInput: UpdateUserInput!): UserEntity!
   deleteUser(id: DeleteUserInput!): UserEntity!
@@ -333,24 +350,46 @@ input UpdateVariantInput {
 }
 
 input CreateOrderInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateOrderInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  clientId: Int!
+  orderNumber: String!
+  totalItem: Int!
+  totalPayment: Int!
+  orderProduct: [CreateOrderProductInput!]
 }
 
 input CreateOrderProductInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  productId: Int!
+  orderId: Int!
+  orderNumber: String!
+  productName: String!
+  variantName: String!
+  amount: Int!
+  uom: String!
+  price: Int!
+}
+
+input UpdateOrderInput {
+  clientId: Int!
+  orderNumber: String!
+  totalItem: Int!
+  totalPayment: Int!
+  orderProduct: [UpdateOrderProductInput!]
+  id: Int!
 }
 
 input UpdateOrderProductInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  productId: Int!
+  orderId: Int!
+  orderNumber: String!
+  productName: String!
+  variantName: String!
+  amount: Int!
+  uom: String!
+  price: Int!
+  id: Int!
+}
+
+input DeleteOrderInput {
   id: Int!
 }
 
