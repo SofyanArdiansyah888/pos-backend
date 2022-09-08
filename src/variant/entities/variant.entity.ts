@@ -3,7 +3,7 @@ import { ProductEntity } from '../../product/entities/product.entity';
 
 @ObjectType()
 export class VariantEntity {
-  @Field(() => Int)
+  @Field(() => Int,{nullable:true})
   id: number;
 
   @Field()
@@ -12,7 +12,7 @@ export class VariantEntity {
   @Field(() => ProductEntity, {nullable:true})
   product: ProductEntity;
 
-  @Field()
+  @Field(() => String)
   name: string;
 
   @Field()

@@ -9,9 +9,11 @@ export class ProductEntity {
   @Field(() => Int)
   id: number;
 
-  @Field(() => VariantEntity,{nullable:true})
-  variant:VariantEntity
+  @Field(() => Int)
+  variantId: number;
 
+  @Field(() => [VariantEntity],{nullable:true})
+  variant:[VariantEntity]
 
   // @Field()
   // orderProduct:[OrderProduct]

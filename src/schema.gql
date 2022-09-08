@@ -61,7 +61,7 @@ enum PriceRole {
 }
 
 type VariantEntity {
-  id: Int!
+  id: Int
   productId: Int!
   product: ProductEntity
   name: String!
@@ -76,7 +76,8 @@ type VariantEntity {
 
 type ProductEntity {
   id: Int!
-  variant: VariantEntity
+  variantId: Int!
+  variant: [VariantEntity!]
   productNumber: String!
   name: String!
   category: String!
@@ -109,7 +110,6 @@ type OrderProductEntity {
 
 type OrderEntity {
   id: Int!
-  clientId: Int!
   client: ClientEntity
   orderNumber: String!
   totalItem: Int!
@@ -128,6 +128,11 @@ type UserEntity {
   role: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type Auth {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 type Query {
@@ -188,6 +193,10 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): UserEntity!
   updateUser(updateUserInput: UpdateUserInput!): UserEntity!
   deleteUser(id: DeleteUserInput!): UserEntity!
+  signin(createAuthInput: CreateAuthInput!): Auth!
+  signup(updateAuthInput: UpdateAuthInput!): Auth!
+  forgetPassword(id: Int!): Auth!
+  changePassword(id: Int!): Auth!
 }
 
 input CreateClientInput {
@@ -409,5 +418,16 @@ input UpdateUserInput {
 }
 
 input DeleteUserInput {
+  id: Int!
+}
+
+input CreateAuthInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateAuthInput {
+  """Example field (placeholder)"""
+  exampleField: Int
   id: Int!
 }

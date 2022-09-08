@@ -5,6 +5,8 @@ import { CreateProductInput } from './input/create-product.input';
 import { UpdateProductInput } from './input/update-product.input';
 import { Prisma } from '@prisma/client';
 import { DeleteProductInput } from './input/delete-product.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/auth.guard';
 
 @Resolver(() => ProductEntity)
 export class ProductResolver {
@@ -19,6 +21,7 @@ export class ProductResolver {
     return this.productService.create(temp);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => [ProductEntity])
   products() {
     return this.productService.findAll({

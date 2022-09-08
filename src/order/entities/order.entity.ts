@@ -7,9 +7,6 @@ export class OrderEntity {
   @Field(() => Int)
   id: number;
 
-  @Field()
-  clientId: number;
-
   @Field(() => ClientEntity, { nullable: true })
   client: ClientEntity;
 

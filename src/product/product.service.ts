@@ -22,6 +22,7 @@ export class ProductService {
       include: {
         variant: true,
       },
+      
     });
   }
 
