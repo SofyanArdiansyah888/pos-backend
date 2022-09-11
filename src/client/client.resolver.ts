@@ -5,7 +5,10 @@ import { CreateClientInput } from './input/create-client.input';
 import { UpdateClientInput } from './input/update-client.input';
 import { Prisma } from '@prisma/client';
 import { DeleteClientInput } from './input/delete-client.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../auth/guard';
 
+@UseGuards(JwtGuard)
 @Resolver(() => ClientEntity)
 export class ClientResolver {
   constructor(private readonly clientService: ClientService) {}

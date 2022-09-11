@@ -18,6 +18,7 @@ import { OrderModule } from './order/order.module';
 import { OrderProductModule } from './order-product/order-product.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
@@ -44,6 +45,9 @@ import { AuthModule } from './auth/auth.module';
     OrderProductModule,
     UserModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal:true
+    })
   ],
   controllers: [AppController],
   providers: [AppService],

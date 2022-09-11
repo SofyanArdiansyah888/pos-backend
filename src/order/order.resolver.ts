@@ -5,7 +5,10 @@ import { CreateOrderInput } from './input/create-order.input';
 import { UpdateOrderInput } from './input/update-order.input';
 import { DeleteOrderInput } from './input/delete-order.input';
 import { Prisma } from '@prisma/client';
+import { JwtGuard } from '../auth/guard';
+import { UseGuards } from '@nestjs/common';
 
+@UseGuards(JwtGuard)
 @Resolver(() => OrderEntity)
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}

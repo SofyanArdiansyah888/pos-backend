@@ -3,9 +3,12 @@ import { VariantService } from './variant.service';
 import { VariantEntity } from './entities/variant.entity';
 import { CreateVariantInput } from './input/create-variant.input';
 import { UpdateVariantInput } from './input/update-variant.input';
-import { prisma, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { DeleteVariantInput } from './input/delete-variant.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../auth/guard';
 
+@UseGuards(JwtGuard)
 @Resolver(() => VariantEntity)
 export class VariantResolver {
   constructor(private readonly variantService: VariantService) {}

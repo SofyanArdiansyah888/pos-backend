@@ -1,13 +1,14 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { ProductService } from './product.service';
+import { UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
+import { JwtGuard } from '../auth/guard';
 import { ProductEntity } from './entities/product.entity';
 import { CreateProductInput } from './input/create-product.input';
-import { UpdateProductInput } from './input/update-product.input';
-import { Prisma } from '@prisma/client';
 import { DeleteProductInput } from './input/delete-product.input';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/auth.guard';
+import { UpdateProductInput } from './input/update-product.input';
+import { ProductService } from './product.service';
 
+@UseGuards(JwtGuard)
 @Resolver(() => ProductEntity)
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
@@ -21,7 +22,7 @@ export class ProductResolver {
     return this.productService.create(temp);
   }
 
-  @UseGuards(JwtAuthGuard)
+  
   @Query(() => [ProductEntity])
   products() {
     return this.productService.findAll({

@@ -5,7 +5,10 @@ import { CreateDiscountInput } from './input/create-discount.input';
 import { UpdateDiscountInput } from './input/update-discount.input';
 import { Prisma } from '@prisma/client';
 import { DeleteDiscountInput } from './input/delete-discount.input';
+import { JwtGuard } from '../auth/guard';
+import { UseGuards } from '@nestjs/common';
 
+@UseGuards(JwtGuard)
 @Resolver(() => DiscountEntity)
 export class DiscountResolver {
   constructor(private readonly discountService: DiscountService) {}

@@ -4,8 +4,11 @@ import { AuthResolver } from './auth.resolver';
 import { PassportModule } from '@nestjs/passport';
 
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
-import { UserService } from '../user/user.service';
+
+import { env } from 'process';
+import { JwtStrategy } from './strategy';
+
+
 
 
 
@@ -13,11 +16,11 @@ import { UserService } from '../user/user.service';
   imports:[
     PassportModule,
     JwtModule.register({
-      secret:"123",
+      secret: env.SECRET_KEY,
       signOptions:{expiresIn: '2d'}
     })
   ],
-  providers: [AuthResolver, AuthService, JwtStrategy,UserService],
+  providers: [AuthResolver, AuthService, JwtStrategy],
   exports:[AuthService]
 })
 export class AuthModule {}

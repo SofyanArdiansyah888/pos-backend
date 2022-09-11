@@ -5,7 +5,10 @@ import { UpdateBrandInput } from './input/update-brand.input';
 import { DeleteBrandInput } from './input/delete-brand.input';
 import { Prisma } from '@prisma/client';
 import { BrandEntity } from './entities/brand.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../auth/guard';
 
+@UseGuards(JwtGuard)
 @Resolver(() => BrandEntity)
 export class BrandResolver {
   constructor(private readonly brandService: BrandService) {}

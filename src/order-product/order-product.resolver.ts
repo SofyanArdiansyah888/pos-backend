@@ -3,7 +3,10 @@ import { OrderProductService } from './order-product.service';
 import { OrderProductEntity } from './entities/order-product.entity';
 import { CreateOrderProductInput } from './input/create-order-product.input';
 import { UpdateOrderProductInput } from './input/update-order-product.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../auth/guard';
 
+// @UseGuards(JwtGuard)
 @Resolver(() => OrderProductEntity)
 export class OrderProductResolver {
   constructor(private readonly orderProductService: OrderProductService) {}

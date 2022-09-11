@@ -1,12 +1,14 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
+import { JwtGuard } from '../auth/guard';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserInput } from './input/create-user.input';
 import { DeleteUserInput } from './input/delete-user.input';
 import { UpdateUserInput } from './input/update-user.input';
 import { UserService } from './user.service';
 
-
+@UseGuards(JwtGuard)
 @Resolver(() => UserEntity)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}

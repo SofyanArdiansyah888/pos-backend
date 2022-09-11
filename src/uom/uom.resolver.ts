@@ -5,7 +5,10 @@ import { CreateUomInput } from './input/create-uom.input';
 import { UpdateUomInput } from './input/update-uom.input';
 import { Prisma } from '@prisma/client';
 import { DeleteUomInput } from './input/delete-uom.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../auth/guard';
 
+@UseGuards(JwtGuard)
 @Resolver(() => UomEntity)
 export class UomResolver {
   constructor(private readonly uomService: UomService) {}

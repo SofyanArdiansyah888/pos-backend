@@ -5,7 +5,10 @@ import { CreateCategoryInput } from './input/create-category.input';
 import { DeleteCategoryInput } from './input/delete-category.input';
 import { UpdateCategoryInput } from './input/update-category.input';
 import { CategoryEntity } from './entities/category.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../auth/guard';
 
+@UseGuards(JwtGuard)
 @Resolver(() => CategoryEntity)
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}

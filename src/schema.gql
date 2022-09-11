@@ -130,9 +130,8 @@ type UserEntity {
   updatedAt: DateTime!
 }
 
-type Auth {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type AuthToken {
+  access_token: String!
 }
 
 type Query {
@@ -193,10 +192,8 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): UserEntity!
   updateUser(updateUserInput: UpdateUserInput!): UserEntity!
   deleteUser(id: DeleteUserInput!): UserEntity!
-  signin(createAuthInput: CreateAuthInput!): Auth!
-  signup(updateAuthInput: UpdateAuthInput!): Auth!
-  forgetPassword(id: Int!): Auth!
-  changePassword(id: Int!): Auth!
+  signin(authInput: AuthInput!): AuthToken!
+  signup(authInput: AuthInput!): AuthToken!
 }
 
 input CreateClientInput {
@@ -421,13 +418,7 @@ input DeleteUserInput {
   id: Int!
 }
 
-input CreateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input AuthInput {
+  password: String!
+  email: String!
 }
