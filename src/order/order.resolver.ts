@@ -15,14 +15,14 @@ export class OrderResolver {
 
   @Mutation(() => OrderEntity)
   createOrder(@Args('createOrderInput') data: CreateOrderInput) {
-    // return this.orderService.create({
-    //   ...data,
-    //   orderProduct:{
-    //     create:[
-    //       // ...data.orderProduct
-    //     ]
-    //   }
-    // });
+    return this.orderService.create({
+      ...data,
+      orderProduct:{
+        create:[
+          ...data.orderProduct
+        ]
+      }
+    });
   }
 
   @Query(() => [OrderEntity])
@@ -42,15 +42,24 @@ export class OrderResolver {
 
   @Mutation(() => OrderEntity)
   updateOrder(@Args('updateOrderInput') data: UpdateOrderInput) {
-    // return this.orderService.update({
-    //   where:{id:data.id},
-    //   data:{
-    //     ...data,
-    //     orderProduct:{
-    //       updateMany:[]
-    //     }
-    //   }
-    // });
+    return this.orderService.update({
+      where:{id:data.id},
+      data:{
+        ...data,
+        orderProduct:{
+          update:[
+            {
+              where:{
+                id:data.id
+              },
+              data:{
+                ...data.orderProduct
+              }
+            }
+          ]
+        }
+      }
+    });
   }
 
   @Mutation(() => OrderEntity)
