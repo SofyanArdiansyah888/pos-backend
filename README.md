@@ -23,12 +23,16 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Simple point of sales demo app service build with NestJS, Graphql, Postgres and Prisma
 
 ## Installation
 
 ```bash
 $ npm install
+
+change variable DATABASE_URL at .env file
+
+$ npx prisma migrate dev --name init
 ```
 
 ## Running the app
