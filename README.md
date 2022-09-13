@@ -1,13 +1,7 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <a href="https://graphql.org/" target="blank"><img src="https://graphql.org/img/brand/logos/logo.svg" width="200" alt="Graphql Logo" /></a>
 </p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-[circleci-image]: https://graphql.org/img/brand/logos/logo.svg
-[circleci-url]: https://graphql.org/
-
 
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
@@ -54,7 +48,7 @@ $ npm run start:prod
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Sofyan Ardiansyah]
+- Website - [https://sofyanardiansyah888.vercel.app](https://sofyanardiansyah888.vercel.app)
+- Linkedin - [sofyan-ardiansyah-06a1b4b2](https://www.linkedin.com/in/sofyan-ardiansyah-06a1b4b2/)
 
