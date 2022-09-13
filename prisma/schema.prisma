@@ -36,7 +36,7 @@ model Order{
   id    Int @default(autoincrement()) @id
   clientId Int?
   client Client? @relation(fields: [clientId],references: [id])
-  orderNumber String
+  orderNumber String @unique
   totalItem Int
   totalPayment Int
   orderProduct OrderProduct[]
@@ -46,10 +46,14 @@ model Order{
 
 model OrderProduct{
   id    Int @default(autoincrement()) @id
-  orderId Int
-  order Order @relation(fields: [orderId],references: [id])
+  orderId Int?
+  order Order? @relation(fields: [orderId],references: [id])
+
+  // productId Int 
+  // product Product @relation(fields: [productId],references: [id])
+
   product Product[]
-  orderNumber String @unique
+  orderNumber String 
   productName String
   variantName String
   amount Int
@@ -62,8 +66,9 @@ model OrderProduct{
 model Product{
   id    Int @default(autoincrement()) @id
   productNumber String? @unique
-  orderProductId Int? 
+  orderProductId Int? @unique
   orderProduct OrderProduct? @relation(fields: [orderProductId],references: [id])
+  // orderProduct OrderProduct[]
   variant Variant[]
   name String
   category String

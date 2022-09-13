@@ -3,15 +3,11 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 
 @InputType()
 export class CreateOrderProductInput {
-  @Field(() => Int)
-  @IsNotEmpty()
-  @IsNumber()
+  @Field(() => Int) 
   productId: number;
 
   
-  @Field(() => Int)
-  @IsNotEmpty()
-  @IsNumber()
+  @Field(() => Int,{nullable:true})
   orderId: number;
 
   

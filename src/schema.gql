@@ -365,7 +365,7 @@ input CreateOrderInput {
 
 input CreateOrderProductInput {
   productId: Int!
-  orderId: Int!
+  orderId: Int
   orderNumber: String!
   productName: String!
   variantName: String!
