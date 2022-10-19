@@ -15,35 +15,34 @@ export class ProductResolver {
 
   @Mutation(() => ProductEntity)
   createProduct(@Args('createProductInput') data: CreateProductInput) {
-    let temp = {
-      ...data,
-      productNumber:"xxx"
-    }
-    return this.productService.create(temp);
+    // const temp = {
+    //   ...data,
+    //   productNumber: 'xxx',
+    // };
+    // return this.productService.create(temp);
   }
 
-  
   @Query(() => [ProductEntity])
   products() {
-    return this.productService.findAll({
-      take: 10,
-      orderBy: { id: Prisma.SortOrder.desc },
-    });
+    // return this.productService.findAll({
+    //   take: 10,
+    //   orderBy: { id: Prisma.SortOrder.desc },
+    // });
   }
 
   @Query(() => ProductEntity)
   product(@Args('id') id: number) {
-    return this.productService.findOne({ id });
+    // return this.productService.findOne({ id });
   }
 
   @Mutation(() => ProductEntity)
   updateProduct(@Args('updateProductInput') data: UpdateProductInput) {
-    return this.productService.update({
-      where: {
-        id: data.id,
-      },
-      data,
-    });
+    // return this.productService.update({
+    //   where: {
+    //     id: data.id,
+    //   },
+    //   data,
+    // });
   }
 
   @Mutation(() => ProductEntity)

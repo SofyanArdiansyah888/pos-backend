@@ -7,7 +7,7 @@ export class ProductService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(data: Prisma.ProductCreateInput) {
-    return this.prisma.product.create({ data });
+    // return this.prisma.product.create({ data });
   }
 
   findAll(params: {
@@ -22,7 +22,6 @@ export class ProductService {
       include: {
         variant: true,
       },
-      
     });
   }
 
@@ -34,7 +33,7 @@ export class ProductService {
     where: Prisma.ProductWhereUniqueInput;
     data: Prisma.ProductUpdateInput;
   }) {
-    return this.prisma.product.update({ ...params });
+    // return this.prisma.product.update({ ...params });
   }
 
   remove(where: Prisma.ProductWhereUniqueInput) {

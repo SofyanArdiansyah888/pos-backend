@@ -6,11 +6,11 @@ export class CategoryEntity {
   id: number;
 
   @Field()
-  name:string;
+  name: string;
 
   @Field()
-  createdAt?:Date
+  createdAt?: Date;
 
   @Field()
-  updatedAt?:Date
+  updatedAt?: Date;
 }

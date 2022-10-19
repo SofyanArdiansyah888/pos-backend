@@ -6,6 +6,5 @@ export class CreateCategoryInput {
   @Field()
   @IsNotEmpty()
   @MinLength(3)
-  name:string
-
+  name: string;
 }

@@ -2,26 +2,8 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ClientEntity {
-  """Id Client"""
-  id: Int!
-  email: String!
-  name: String!
-  phone: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type BrandEntity {
-  id: Int!
-  name: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+type AuthToken {
+  access_token: String!
 }
 
 type CategoryEntity {
@@ -31,33 +13,33 @@ type CategoryEntity {
   updatedAt: DateTime!
 }
 
-type UomEntity {
-  id: Int!
-  name: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
-type TaxEntity {
+type OrderProductEntity {
   id: Int!
+  productId: Int!
+  orderId: Int!
+  orderNumber: String!
+  productName: String!
+  variantName: String!
   amount: Int!
-  description: String!
+  uom: String!
+  price: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type DiscountEntity {
+type OrderEntity {
   id: Int!
-  discountType: PriceRole!
-  amount: Int!
-  description: String!
+  orderNumber: String!
+  totalItem: Int!
+  totalPayment: Int!
+  orderProduct: [OrderProductEntity!]
   createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-enum PriceRole {
-  FIXED
-  PERCENT
+  updateddAt: DateTime!
 }
 
 type VariantEntity {
@@ -94,59 +76,38 @@ type ProductEntity {
   updateddAt: DateTime!
 }
 
-type OrderProductEntity {
+type TaxEntity {
   id: Int!
-  productId: Int!
-  orderId: Int!
-  orderNumber: String!
-  productName: String!
-  variantName: String!
   amount: Int!
-  uom: String!
-  price: Int!
+  description: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type OrderEntity {
-  id: Int!
-  client: ClientEntity
-  orderNumber: String!
-  totalItem: Int!
-  totalPayment: Int!
-  orderProduct: [OrderProductEntity!]
-  createdAt: DateTime!
-  updateddAt: DateTime!
-}
-
 type UserEntity {
-  """Id Client"""
   id: Int!
   email: String!
-  name: String!
+  name: String
   password: String!
   role: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type AuthToken {
-  access_token: String!
+type CustomerEntity {
+  id: Int!
+  email: String
+  phone: String
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
-  clients: [ClientEntity!]!
-  client(id: Int!): ClientEntity!
-  brands: [BrandEntity!]!
-  brand(id: Int!): BrandEntity!
-  categories: [CategoryEntity!]!
+  categories(findCategoryInput: FindCategoryInput): [CategoryEntity!]
   category(id: Int!): CategoryEntity!
-  uoms: [UomEntity!]!
-  uom(id: Int!): UomEntity!
   taxes: [TaxEntity!]!
   tax(id: Int!): TaxEntity!
-  discounts: [DiscountEntity!]!
-  discount(id: Int!): DiscountEntity!
   products: [ProductEntity!]!
   product(id: Int!): ProductEntity!
   variants: [VariantEntity!]
@@ -154,29 +115,40 @@ type Query {
   orders: [OrderEntity!]!
   order(id: Int!): OrderEntity!
   orderProduct(id: Int!): OrderProductEntity!
-  users: [UserEntity!]!
+  users(findUserInput: FindUserInput): [UserEntity!]
   user(id: Int!): UserEntity!
+  customers(findCustomerInput: FindCustomerInput): [CustomerEntity!]
+  customer(id: Int!): CustomerEntity!
+}
+
+input FindCategoryInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
+input FindUserInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
+input FindCustomerInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
 }
 
 type Mutation {
-  createClient(createClientInput: CreateClientInput!): ClientEntity!
-  updateClient(updateClientInput: UpdateClientInput!): ClientEntity!
-  deleteClient(id: DeleteClientInput!): ClientEntity!
-  createBrand(createBrandInput: CreateBrandInput!): BrandEntity!
-  updateBrand(updateBrandInput: UpdateBrandInput!): BrandEntity!
-  deleteBrand(id: DeleteBrandInput!): BrandEntity!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryEntity!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryEntity!
   deleteCategory(id: DeleteCategoryInput!): CategoryEntity!
-  createUom(createUomInput: CreateUomInput!): UomEntity!
-  updateUom(updateUomInput: UpdateUomInput!): UomEntity!
-  deleteUom(id: DeleteUomInput!): UomEntity!
   createTax(createTaxInput: CreateTaxInput!): TaxEntity!
   updateTax(updateTaxInput: UpdateTaxInput!): TaxEntity!
   deleteTax(id: DeleteTaxInput!): TaxEntity!
-  createDiscount(createDiscountInput: CreateDiscountInput!): DiscountEntity!
-  updateDiscount(updateDiscountInput: UpdateDiscountInput!): DiscountEntity!
-  deleteDiscount(id: DeleteDiscountInput!): DiscountEntity!
   createProduct(createProductInput: CreateProductInput!): ProductEntity!
   updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
   deleteProduct(id: DeleteProductInput!): ProductEntity!
@@ -194,46 +166,9 @@ type Mutation {
   deleteUser(id: DeleteUserInput!): UserEntity!
   signin(authInput: AuthInput!): AuthToken!
   signup(authInput: AuthInput!): AuthToken!
-}
-
-input CreateClientInput {
-  """"""
-  email: String!
-
-  """"""
-  name: String!
-
-  """"""
-  phone: String!
-}
-
-input UpdateClientInput {
-  """"""
-  email: String!
-
-  """"""
-  name: String!
-
-  """"""
-  phone: String!
-  id: Int!
-}
-
-input DeleteClientInput {
-  id: Int!
-}
-
-input CreateBrandInput {
-  name: String!
-}
-
-input UpdateBrandInput {
-  name: String!
-  id: Int!
-}
-
-input DeleteBrandInput {
-  id: Int!
+  createCustomer(createCustomerInput: CreateCustomerInput!): CustomerEntity!
+  updateCustomer(updateCustomerInput: UpdateCustomerInput!): CustomerEntity!
+  deleteCustomer(id: DeleteCustomerInput!): CustomerEntity!
 }
 
 input CreateCategoryInput {
@@ -249,19 +184,6 @@ input DeleteCategoryInput {
   id: Int!
 }
 
-input CreateUomInput {
-  name: String!
-}
-
-input UpdateUomInput {
-  name: String
-  id: Int!
-}
-
-input DeleteUomInput {
-  id: Int!
-}
-
 input CreateTaxInput {
   amount: Int!
   description: String!
@@ -274,23 +196,6 @@ input UpdateTaxInput {
 }
 
 input DeleteTaxInput {
-  id: Int!
-}
-
-input CreateDiscountInput {
-  discountType: String!
-  amount: Int!
-  description: String!
-}
-
-input UpdateDiscountInput {
-  discountType: String!
-  amount: Int!
-  description: String!
-  id: Int!
-}
-
-input DeleteDiscountInput {
   id: Int!
 }
 
@@ -407,11 +312,11 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
+  id: Int!
   email: String!
   name: String!
-  password: String
   role: String!
-  id: Int!
+  password: String
 }
 
 input DeleteUserInput {
@@ -421,4 +326,21 @@ input DeleteUserInput {
 input AuthInput {
   password: String!
   email: String!
+}
+
+input CreateCustomerInput {
+  email: String
+  phone: String
+  name: String!
+}
+
+input UpdateCustomerInput {
+  id: Int!
+  email: String
+  phone: String
+  name: String!
+}
+
+input DeleteCustomerInput {
+  id: Int!
 }

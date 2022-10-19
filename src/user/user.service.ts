@@ -9,7 +9,7 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Prisma.UserCreateInput) {
-    let password = await argon2.hash(data.password);
+    const password = await argon2.hash(data.password);
     return this.prisma.user.create({
       data: {
         ...data,
@@ -32,10 +32,13 @@ export class UserService {
     return this.prisma.user.findUnique({ where });
   }
 
-  update(params: {
+  async update(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
   }) {
+    if (params.data.password) {
+      params.data.password = await argon2.hash(params.data.password.toString());
+    }
     return this.prisma.user.update({ ...params });
   }
 

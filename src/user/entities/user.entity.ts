@@ -1,37 +1,35 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 
-
 @ObjectType()
 export class UserEntity {
-  @Field(() => Int, { description: 'Id Client' })
+  @Field(() => Int)
   id: number;
 
   @Field()
-  email: string
+  email: string;
+
+  @Field({ nullable: true })
+  name: string;
 
   @Field()
-  name: string
+  password: string;
 
   @Field()
-  password: string
+  role: UserRole;
 
   @Field()
-  role: UserRole
+  createdAt?: Date;
 
   @Field()
-  createdAt?:Date
-
-  @Field()
-  updatedAt?:Date
+  updatedAt?: Date;
 }
-
 
 export enum UserRole {
-  ADMIN="ADMIN",
-  CASHIER="CASHIER",
-  KITCHEN="KITCHEN",
+  ADMIN = 'ADMIN',
+  CASHIER = 'CASHIER',
+  WAREHOUSE = 'WAREHOUSE',
 }
 
-registerEnumType(UserRole,{
-  name:'UserRole',
-})
+registerEnumType(UserRole, {
+  name: 'UserRole',
+});

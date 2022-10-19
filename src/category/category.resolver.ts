@@ -7,6 +7,7 @@ import { UpdateCategoryInput } from './input/update-category.input';
 import { CategoryEntity } from './entities/category.entity';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/guard';
+import { FindCategoryInput } from './input/find-category.input';
 
 @UseGuards(JwtGuard)
 @Resolver(() => CategoryEntity)
@@ -18,29 +19,41 @@ export class CategoryResolver {
     return this.categoryService.create(data);
   }
 
-  @Query(() => [CategoryEntity])
-  categories() {
+  @Query(() => [CategoryEntity], { nullable: true })
+  categories(
+    @Args('findCategoryInput', { nullable: true }) data: FindCategoryInput,
+  ) {
+    const { take, skip, cursor, filter } = data || { take: 10, cursor: 0 };
     return this.categoryService.findAll({
-      take:10,
-      orderBy:{
-        id:Prisma.SortOrder.desc
-      }
+      take,
+      skip,
+      cursor: {
+        id: cursor,
+      },
+      where: {
+        OR: [
+          {
+            name: filter,
+          },
+        ],
+      },
+      orderBy: {
+        id: Prisma.SortOrder.desc,
+      },
     });
   }
 
   @Query(() => CategoryEntity)
   category(@Args('id') id: number) {
     return this.categoryService.findOne({
-      id
+      id,
     });
   }
 
   @Mutation(() => CategoryEntity)
-  updateCategory(
-    @Args('updateCategoryInput') data: UpdateCategoryInput,
-  ) {
+  updateCategory(@Args('updateCategoryInput') data: UpdateCategoryInput) {
     return this.categoryService.update({
-      where: { id:data.id },
+      where: { id: data.id },
       data,
     });
   }
