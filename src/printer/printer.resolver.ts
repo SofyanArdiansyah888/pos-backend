@@ -1,35 +1,67 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
+import { PrinterEntity } from './entities/printer.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtGuard } from '../auth/guard';
 import { PrinterService } from './printer.service';
-import { Printer } from './entities/printer.entity';
 import { CreatePrinterInput } from './input/create-printer.input';
-import { UpdatePrinterInput } from './input/update-printer.input';
+import { FindPrinterInput } from '../printer/input/find-printer.input';
+import { UpdatePrinterInput } from '../printer/input/update-printer.input';
+import { DeletePrinterInput } from '../printer/input/delete-printer.input';
 
-@Resolver(() => Printer)
+// @UseGuards(JwtGuard)
+@Resolver(() => PrinterEntity)
 export class PrinterResolver {
   constructor(private readonly printerService: PrinterService) {}
 
-  @Mutation(() => Printer)
-  createPrinter(@Args('createPrinterInput') createPrinterInput: CreatePrinterInput) {
-    return this.printerService.create(createPrinterInput);
+  @Mutation(() => PrinterEntity)
+  createPrinter(@Args('createPrinterInput') data: CreatePrinterInput) {
+    return this.printerService.create(data);
   }
 
-  @Query(() => [Printer], { name: 'printer' })
-  findAll() {
-    return this.printerService.findAll();
+  @Query(() => [PrinterEntity], { nullable: true })
+  printers(
+    @Args('findPrinterInput', { nullable: true }) data: FindPrinterInput,
+  ) {
+    const { take, skip, cursor, filter } = data || { take: 10, cursor: 0 };
+    return this.printerService.findAll({
+      take,
+      skip,
+      // cursor: {
+      //   id: cursor,
+      // },
+      // where: {
+      //   OR: [
+      //     {
+      //       name: filter,
+      //     },
+      //   ],
+      // },
+      orderBy: {
+        id: Prisma.SortOrder.desc,
+      },
+    });
   }
 
-  @Query(() => Printer, { name: 'printer' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.printerService.findOne(id);
+  @Query(() => PrinterEntity)
+  printer(@Args('id') id: number) {
+    return this.printerService.findOne({
+      id,
+    });
   }
 
-  @Mutation(() => Printer)
-  updatePrinter(@Args('updatePrinterInput') updatePrinterInput: UpdatePrinterInput) {
-    return this.printerService.update(updatePrinterInput.id, updatePrinterInput);
+  @Mutation(() => PrinterEntity)
+  updatePrinter(@Args('updatePrinterInput') data: UpdatePrinterInput) {
+    return this.printerService.update({
+      where: { id: data.id },
+      data,
+    });
   }
 
-  @Mutation(() => Printer)
-  removePrinter(@Args('id', { type: () => Int }) id: number) {
-    return this.printerService.remove(id);
+  @Mutation(() => PrinterEntity)
+  deletePrinter(@Args('id') { id }: DeletePrinterInput) {
+    return this.printerService.remove({
+      id,
+    });
   }
 }

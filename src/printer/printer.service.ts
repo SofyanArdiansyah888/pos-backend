@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePrinterInput } from './input/create-printer.input';
-import { UpdatePrinterInput } from './input/update-printer.input';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { PrinterEntity } from './entities/printer.entity';
 
 @Injectable()
 export class PrinterService {
-  create(createPrinterInput: CreatePrinterInput) {
-    return 'This action adds a new printer';
+  constructor(private readonly prisma: PrismaService) {}
+
+  create(data: Prisma.PrinterCreateInput): Promise<PrinterEntity> {
+    return this.prisma.printer.create({
+      data,
+    });
   }
 
-  findAll() {
-    return `This action returns all printer`;
+  findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.PrinterWhereUniqueInput;
+    where?: Prisma.PrinterWhereInput;
+    orderBy?: Prisma.PrinterOrderByWithRelationInput;
+  }): Promise<PrinterEntity[]> {
+    return this.prisma.printer.findMany({
+      ...params,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} printer`;
+  findOne(where: Prisma.PrinterWhereUniqueInput): Promise<PrinterEntity> {
+    return this.prisma.printer.findUnique({
+      where,
+    });
   }
 
-  update(id: number, updatePrinterInput: UpdatePrinterInput) {
-    return `This action updates a #${id} printer`;
+  update(params: {
+    where: Prisma.PrinterWhereUniqueInput;
+    data: Prisma.PrinterUpdateInput;
+  }): Promise<PrinterEntity> {
+    return this.prisma.printer.update({
+      ...params,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} printer`;
+  remove(where: Prisma.PrinterWhereUniqueInput): Promise<PrinterEntity> {
+    return this.prisma.printer.delete({
+      where,
+    });
   }
 }

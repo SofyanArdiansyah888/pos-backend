@@ -1,7 +1,20 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsNotEmpty, MinLength } from 'class-validator';
 
 @InputType()
 export class CreatePrinterInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field()
+  @IsNotEmpty()
+  @MinLength(3)
+  name: string;
+
+  @Field()
+  @IsNotEmpty()
+  @MinLength(3)
+  description: string;
+
+  @Field()
+  @IsNotEmpty()
+  @MinLength(3)
+  ipAddress: string;
 }

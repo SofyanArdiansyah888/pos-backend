@@ -114,9 +114,13 @@ type MaterialEntity {
   updatedAt: DateTime!
 }
 
-type Printer {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type PrinterEntity {
+  id: Int!
+  name: String!
+  description: String!
+  ipAddress: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Table {
@@ -142,7 +146,8 @@ type Query {
   customer(id: Int!): CustomerEntity!
   materials(findMaterialInput: FindMaterialInput): [MaterialEntity!]
   material(id: Int!): MaterialEntity!
-  printer(id: Int!): Printer!
+  printers(findPrinterInput: FindPrinterInput): [PrinterEntity!]
+  printer(id: Int!): PrinterEntity!
   table(id: Int!): Table!
 }
 
@@ -168,6 +173,13 @@ input FindCustomerInput {
 }
 
 input FindMaterialInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
+input FindPrinterInput {
   take: Int!
   skip: Int!
   cursor: Int!
@@ -204,9 +216,9 @@ type Mutation {
   createMaterial(createMaterialInput: CreateMaterialInput!): MaterialEntity!
   updateMaterial(updateMaterialInput: UpdateMaterialInput!): MaterialEntity!
   deleteMaterial(id: DeleteMaterialInput!): MaterialEntity!
-  createPrinter(createPrinterInput: CreatePrinterInput!): Printer!
-  updatePrinter(updatePrinterInput: UpdatePrinterInput!): Printer!
-  removePrinter(id: Int!): Printer!
+  createPrinter(createPrinterInput: CreatePrinterInput!): PrinterEntity!
+  updatePrinter(updatePrinterInput: UpdatePrinterInput!): PrinterEntity!
+  deletePrinter(id: DeletePrinterInput!): PrinterEntity!
   createTable(createTableInput: CreateTableInput!): Table!
   updateTable(updateTableInput: UpdateTableInput!): Table!
   removeTable(id: Int!): Table!
@@ -406,13 +418,19 @@ input DeleteMaterialInput {
 }
 
 input CreatePrinterInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+  description: String!
+  ipAddress: String!
 }
 
 input UpdatePrinterInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  name: String!
+  description: String!
+  ipAddress: String!
+  id: Int!
+}
+
+input DeletePrinterInput {
   id: Int!
 }
 
