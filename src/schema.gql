@@ -103,6 +103,27 @@ type CustomerEntity {
   updatedAt: DateTime!
 }
 
+type MaterialEntity {
+  id: Int!
+  name: String!
+  stock: Int!
+  minimalStock: Int!
+  code: String
+  type: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Printer {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Table {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   categories(findCategoryInput: FindCategoryInput): [CategoryEntity!]
   category(id: Int!): CategoryEntity!
@@ -119,6 +140,10 @@ type Query {
   user(id: Int!): UserEntity!
   customers(findCustomerInput: FindCustomerInput): [CustomerEntity!]
   customer(id: Int!): CustomerEntity!
+  materials(findMaterialInput: FindMaterialInput): [MaterialEntity!]
+  material(id: Int!): MaterialEntity!
+  printer(id: Int!): Printer!
+  table(id: Int!): Table!
 }
 
 input FindCategoryInput {
@@ -136,6 +161,13 @@ input FindUserInput {
 }
 
 input FindCustomerInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
+input FindMaterialInput {
   take: Int!
   skip: Int!
   cursor: Int!
@@ -169,6 +201,15 @@ type Mutation {
   createCustomer(createCustomerInput: CreateCustomerInput!): CustomerEntity!
   updateCustomer(updateCustomerInput: UpdateCustomerInput!): CustomerEntity!
   deleteCustomer(id: DeleteCustomerInput!): CustomerEntity!
+  createMaterial(createMaterialInput: CreateMaterialInput!): MaterialEntity!
+  updateMaterial(updateMaterialInput: UpdateMaterialInput!): MaterialEntity!
+  deleteMaterial(id: DeleteMaterialInput!): MaterialEntity!
+  createPrinter(createPrinterInput: CreatePrinterInput!): Printer!
+  updatePrinter(updatePrinterInput: UpdatePrinterInput!): Printer!
+  removePrinter(id: Int!): Printer!
+  createTable(createTableInput: CreateTableInput!): Table!
+  updateTable(updateTableInput: UpdateTableInput!): Table!
+  removeTable(id: Int!): Table!
 }
 
 input CreateCategoryInput {
@@ -342,5 +383,46 @@ input UpdateCustomerInput {
 }
 
 input DeleteCustomerInput {
+  id: Int!
+}
+
+input CreateMaterialInput {
+  name: String!
+  minimalStock: Int!
+  code: String!
+  type: String!
+}
+
+input UpdateMaterialInput {
+  name: String!
+  minimalStock: Int!
+  code: String!
+  type: String!
+  id: Int!
+}
+
+input DeleteMaterialInput {
+  id: Int!
+}
+
+input CreatePrinterInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdatePrinterInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateTableInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateTableInput {
+  """Example field (placeholder)"""
+  exampleField: Int
   id: Int!
 }

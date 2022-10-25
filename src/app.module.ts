@@ -15,6 +15,9 @@ import { TaxModule } from './tax/tax.module';
 import { UserModule } from './user/user.module';
 import { VariantModule } from './variant/variant.module';
 import { CustomerModule } from './customer/customer.module';
+import { MaterialModule } from './material/material.module';
+import { PrinterModule } from './printer/printer.module';
+import { TableModule } from './table/table.module';
 
 @Module({
   imports: [
@@ -40,6 +43,9 @@ import { CustomerModule } from './customer/customer.module';
       isGlobal: true,
     }),
     CustomerModule,
+    MaterialModule,
+    PrinterModule,
+    TableModule,
   ],
   controllers: [AppController],
   providers: [AppService],

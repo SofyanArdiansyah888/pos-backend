@@ -9,7 +9,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from '../auth/guard';
 import { FindCategoryInput } from './input/find-category.input';
 
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
 @Resolver(() => CategoryEntity)
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
@@ -27,16 +27,16 @@ export class CategoryResolver {
     return this.categoryService.findAll({
       take,
       skip,
-      cursor: {
-        id: cursor,
-      },
-      where: {
-        OR: [
-          {
-            name: filter,
-          },
-        ],
-      },
+      // cursor: {
+      //   id: cursor,
+      // },
+      // where: {
+      //   OR: [
+      //     {
+      //       name: filter,
+      //     },
+      //   ],
+      // },
       orderBy: {
         id: Prisma.SortOrder.desc,
       },

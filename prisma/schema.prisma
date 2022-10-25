@@ -108,8 +108,9 @@ model Material {
   materialInventory InventoryMaterial?
   materialNumber    String?            @unique
   name              String
-  stock             Int
+  stock             Int?                @default(0)
   minimalStock      Int
+  code              String // SKU
   type              MaterialType       @default(RAW)
   createdAt         DateTime           @default(now())
   updatedAt         DateTime?          @default(now()) @updatedAt
