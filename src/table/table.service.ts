@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTableInput } from './input/create-table.input';
-import { UpdateTableInput } from './input/update-table.input';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { TableEntity } from './entities/table.entity';
 
 @Injectable()
 export class TableService {
-  create(createTableInput: CreateTableInput) {
-    return 'This action adds a new table';
+  constructor(private readonly prisma: PrismaService) {}
+
+  create(data: Prisma.TableCreateInput): Promise<any> {
+    return this.prisma.table.create({
+      data,
+    });
   }
 
-  findAll() {
-    return `This action returns all table`;
+  findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.TableWhereUniqueInput;
+    where?: Prisma.TableWhereInput;
+    orderBy?: Prisma.TableOrderByWithRelationInput;
+  }): Promise<any[]> {
+    return this.prisma.table.findMany({
+      ...params,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} table`;
+  findOne(where: Prisma.TableWhereUniqueInput): Promise<any> {
+    return this.prisma.table.findUnique({
+      where,
+    });
   }
 
-  update(id: number, updateTableInput: UpdateTableInput) {
-    return `This action updates a #${id} table`;
+  update(params: {
+    where: Prisma.TableWhereUniqueInput;
+    data: Prisma.TableUpdateInput;
+  }): Promise<any> {
+    return this.prisma.table.update({
+      ...params,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} table`;
+  remove(where: Prisma.TableWhereUniqueInput): Promise<any> {
+    return this.prisma.table.delete({
+      where,
+    });
   }
 }

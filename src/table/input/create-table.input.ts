@@ -1,7 +1,10 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsNotEmpty, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateTableInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field()
+  @IsNotEmpty()
+  @MinLength(3)
+  name: string;
 }

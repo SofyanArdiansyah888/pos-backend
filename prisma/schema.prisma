@@ -41,10 +41,13 @@ model Order {
   id           Int            @id @default(autoincrement())
   customerId   Int?
   customer     Customer?      @relation(fields: [customerId], references: [id])
+  tableId      Int
+  table        Table          @relation(fields: [tableId], references: [id])
   orderNumber  String         @unique
   totalItem    Int
   totalPayment Int
   orderProduct OrderProduct[]
+  paymentAt    DateTime?      
   createdAt    DateTime       @default(now())
   updatedAt    DateTime?      @default(now()) @updatedAt
   deleted      Boolean        @default(false)
@@ -157,11 +160,20 @@ enum PriceRole {
 // TABLE
 model Table {
   id               Int                @id @default(autoincrement())
-  tableReserVation TableReserVation[]
   name             String
+  status           StatusTable        @default(CLOSED)
+  orders           Order[]
+  tableReserVation TableReserVation[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime?          @default(now()) @updatedAt
   deleted          Boolean            @default(false)
+}
+
+enum StatusTable {
+  OPEN
+  ORDERED
+  RESERVED
+  CLOSED
 }
 
 model TableReserVation {
@@ -169,10 +181,15 @@ model TableReserVation {
   reservationNumber String    @unique
   tableId           Int?
   table             Table?    @relation(fields: [tableId], references: [id])
-  isReserved        Boolean   @default(true)
+  status            ReservationStatus   @default(RESERVED)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime? @default(now()) @updatedAt
   deleted           Boolean   @default(false)
+}
+
+enum ReservationStatus {
+  RESERVED
+  REJECT
 }
 
 // INVENTORY

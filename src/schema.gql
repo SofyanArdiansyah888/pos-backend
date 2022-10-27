@@ -38,6 +38,7 @@ type OrderEntity {
   totalItem: Int!
   totalPayment: Int!
   orderProduct: [OrderProductEntity!]
+  paymentAt: DateTime!
   createdAt: DateTime!
   updateddAt: DateTime!
 }
@@ -123,9 +124,13 @@ type PrinterEntity {
   updatedAt: DateTime!
 }
 
-type Table {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type TableEntity {
+  id: Int!
+  name: String!
+  status: String!
+  order: OrderEntity
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
@@ -137,8 +142,6 @@ type Query {
   product(id: Int!): ProductEntity!
   variants: [VariantEntity!]
   variant(id: Int!): VariantEntity
-  orders: [OrderEntity!]!
-  order(id: Int!): OrderEntity!
   orderProduct(id: Int!): OrderProductEntity!
   users(findUserInput: FindUserInput): [UserEntity!]
   user(id: Int!): UserEntity!
@@ -148,7 +151,8 @@ type Query {
   material(id: Int!): MaterialEntity!
   printers(findPrinterInput: FindPrinterInput): [PrinterEntity!]
   printer(id: Int!): PrinterEntity!
-  table(id: Int!): Table!
+  tables(findTableInput: FindTableInput): [TableEntity!]
+  table(id: Int!): TableEntity!
 }
 
 input FindCategoryInput {
@@ -186,6 +190,13 @@ input FindPrinterInput {
   filter: String!
 }
 
+input FindTableInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
 type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryEntity!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryEntity!
@@ -199,9 +210,7 @@ type Mutation {
   createVariant(createVariantInput: CreateVariantInput!): VariantEntity!
   updateVariant(updateVariantInput: UpdateVariantInput!): VariantEntity!
   deleteVariant(id: Int!): VariantEntity!
-  createOrder(createOrderInput: CreateOrderInput!): OrderEntity!
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderEntity!
-  removeOrder(id: DeleteOrderInput!): OrderEntity!
   createOrderProduct(createOrderProductInput: CreateOrderProductInput!): OrderProductEntity!
   updateOrderProduct(updateOrderProductInput: UpdateOrderProductInput!): OrderProductEntity!
   removeOrderProduct(id: Int!): OrderProductEntity!
@@ -219,9 +228,9 @@ type Mutation {
   createPrinter(createPrinterInput: CreatePrinterInput!): PrinterEntity!
   updatePrinter(updatePrinterInput: UpdatePrinterInput!): PrinterEntity!
   deletePrinter(id: DeletePrinterInput!): PrinterEntity!
-  createTable(createTableInput: CreateTableInput!): Table!
-  updateTable(updateTableInput: UpdateTableInput!): Table!
-  removeTable(id: Int!): Table!
+  createTable(createTableInput: CreateTableInput!): TableEntity!
+  updateTable(updateTableInput: UpdateTableInput!): TableEntity!
+  deleteTable(id: DeleteTableInput!): TableEntity!
 }
 
 input CreateCategoryInput {
@@ -313,25 +322,6 @@ input UpdateVariantInput {
   id: Int!
 }
 
-input CreateOrderInput {
-  clientId: Int!
-  orderNumber: String!
-  totalItem: Int!
-  totalPayment: Int!
-  orderProduct: [CreateOrderProductInput!]
-}
-
-input CreateOrderProductInput {
-  productId: Int!
-  orderId: Int
-  orderNumber: String!
-  productName: String!
-  variantName: String!
-  amount: Int!
-  uom: String!
-  price: Int!
-}
-
 input UpdateOrderInput {
   clientId: Int!
   orderNumber: String!
@@ -353,8 +343,15 @@ input UpdateOrderProductInput {
   id: Int!
 }
 
-input DeleteOrderInput {
-  id: Int!
+input CreateOrderProductInput {
+  productId: Int!
+  orderId: Int
+  orderNumber: String!
+  productName: String!
+  variantName: String!
+  amount: Int!
+  uom: String!
+  price: Int!
 }
 
 input CreateUserInput {
@@ -435,12 +432,14 @@ input DeletePrinterInput {
 }
 
 input CreateTableInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
 }
 
 input UpdateTableInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  name: String!
+  id: Int!
+}
+
+input DeleteTableInput {
   id: Int!
 }

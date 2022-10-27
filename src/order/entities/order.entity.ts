@@ -23,6 +23,9 @@ export class OrderEntity {
   orderProduct: [OrderProductEntity];
 
   @Field()
+  paymentAt: Date;
+
+  @Field()
   createdAt: Date;
 
   @Field()
