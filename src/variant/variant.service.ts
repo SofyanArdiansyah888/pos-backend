@@ -7,7 +7,7 @@ export class VariantService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(data: Prisma.VariantCreateInput) {
-    return this.prisma.variant.create({ data });
+    // return this.prisma.variant.create({ data });
   }
 
   findAll(params: {

@@ -13,36 +13,36 @@ import { JwtGuard } from '../auth/guard';
 export class VariantResolver {
   constructor(private readonly variantService: VariantService) {}
 
-  @Mutation(() => VariantEntity)
-  createVariant(@Args('createVariantInput') data: CreateVariantInput) {
-    return this.variantService.create({
-      ...data
-    });
-  }
+  // @Mutation(() => VariantEntity)
+  // createVariant(@Args('createVariantInput') data: CreateVariantInput) {
+  //   return this.variantService.create({
+  //     ...data
+  //   });
+  // }
 
-  @Query(() => [VariantEntity],{nullable:true})
-  variants() {
-    return this.variantService.findAll({
-      take:10,
-      orderBy:{id:Prisma.SortOrder.desc}
-    });
-  }
+  // @Query(() => [VariantEntity],{nullable:true})
+  // variants() {
+  //   return this.variantService.findAll({
+  //     take:10,
+  //     orderBy:{id:Prisma.SortOrder.desc}
+  //   });
+  // }
 
-  @Query(() => VariantEntity, {nullable:true})
-  variant(@Args('id', { type: () => Int }) id: number) {
-    return this.variantService.findOne({ id });
-  }
+  // @Query(() => VariantEntity, {nullable:true})
+  // variant(@Args('id', { type: () => Int }) id: number) {
+  //   return this.variantService.findOne({ id });
+  // }
 
-  @Mutation(() => VariantEntity)
-  updateVariant(@Args('updateVariantInput') data: UpdateVariantInput) {
-    return this.variantService.update({
-      where:{id:data.id},
-      data
-    });
-  }
+  // @Mutation(() => VariantEntity)
+  // updateVariant(@Args('updateVariantInput') data: UpdateVariantInput) {
+  //   return this.variantService.update({
+  //     where:{id:data.id},
+  //     data
+  //   });
+  // }
 
-  @Mutation(() => VariantEntity)
-  deleteVariant(@Args('id', { type: () => Int }) {id}: DeleteVariantInput) {
-    return this.variantService.remove({id});
-  }
+  // @Mutation(() => VariantEntity)
+  // deleteVariant(@Args('id', { type: () => Int }) {id}: DeleteVariantInput) {
+  //   return this.variantService.remove({id});
+  // }
 }

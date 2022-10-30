@@ -71,23 +71,58 @@ model OrderProduct {
 
 // PRODUCT
 model Product {
-  id             Int           @id @default(autoincrement())
-  code           String        @unique
-  orderProductId Int?          @unique
-  orderProduct   OrderProduct? @relation(fields: [orderProductId], references: [id])
-  variant        Variant[]
-  material       Material[]
-  name           String
-  category       String
-  description    String
-  photo          String
-  isFavourite    Boolean       @default(false)
-  price          Int           @default(0)
-  isStock        Boolean       @default(false)
-  uom            String
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime?     @default(now()) @updatedAt
-  deleted        Boolean       @default(false)
+  id              Int               @id @default(autoincrement())
+  code            String            @unique
+  orderProductId  Int?              @unique
+  orderProduct    OrderProduct?     @relation(fields: [orderProductId], references: [id])
+  variants        Variant[]
+  productMaterial ProductMaterial[]
+  category        Category?         @relation(fields: [categoryId], references: [id])
+  categoryId      Int
+  name            String
+  description     String
+  photo           String
+  isFavourite     Boolean           @default(false)
+  price           Int               @default(0)
+  isStock         Boolean           @default(false)
+  uom             String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime?         @default(now()) @updatedAt
+  deleted         Boolean           @default(false)
+}
+
+model ProductMaterial {
+  id         Int       @id @default(autoincrement())
+  productId  Int?
+  product    Product?  @relation(fields: [productId], references: [id])
+  materialId Int
+  material   Material? @relation(fields: [materialId], references: [id])
+  quantity   Int       @default(1)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @default(now()) @updatedAt
+}
+
+model Material {
+  id                    Int                     @id @default(autoincrement())
+  productMaterial       ProductMaterial[]
+  stockMaterial         StockMaterial[]
+  incomingStockMaterial IncomingStockMaterial[]
+  OpnameStockMaterial   OpnameStockMaterial[]
+  WastedStockMaterial   WastedStockMaterial[]
+  materialNumber        String?                 @unique
+  name                  String
+  stock                 Int?                    @default(0)
+  minimalStock          Int
+  code                  String // SKU
+  type                  MaterialType            @default(RAW)
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime?               @default(now()) @updatedAt
+  deleted               Boolean                 @default(false)
+}
+
+enum MaterialType {
+  RAW
+  SUPPORT
 }
 
 model Variant {
@@ -102,33 +137,13 @@ model Variant {
   deleted     Boolean   @default(false)
 }
 
-model Material {
-  id                Int                @id @default(autoincrement())
-  productId         Int?
-  product           Product?           @relation(fields: [productId], references: [id])
-  materialInventory InventoryMaterial?
-  materialNumber    String?            @unique
-  name              String
-  stock             Int?               @default(0)
-  minimalStock      Int
-  code              String // SKU
-  type              MaterialType       @default(RAW)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime?          @default(now()) @updatedAt
-  deleted           Boolean            @default(false)
-}
-
-enum MaterialType {
-  RAW
-  SUPPORT
-}
-
 model Category {
   id        Int       @id @default(autoincrement())
   name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now()) @updatedAt
   deleted   Boolean   @default(false)
+  Product   Product[]
 }
 
 model Tax {
@@ -191,6 +206,91 @@ enum ReservationStatus {
 }
 
 // INVENTORY
+model StockMaterial {
+  id         Int       @id @default(autoincrement())
+  startStock Int
+  inStock    Int?      @default(0)
+  sellStock  Int?      @default(0)
+  endStock   Int
+  uom        String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @default(now()) @updatedAt
+  deleted    Boolean   @default(false)
+  material   Material? @relation(fields: [materialId], references: [id])
+  materialId Int?
+}
+
+model IncomingStock {
+  id                    Int                     @id @default(autoincrement())
+  incomingStockMaterial IncomingStockMaterial[]
+  invoiceNumber         String                  @unique
+  tanggalMasuk          DateTime
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime?               @default(now()) @updatedAt
+  deleted               Boolean                 @default(false)
+}
+
+model IncomingStockMaterial {
+  id              Int            @id @default(autoincrement())
+  incomingStockId Int?
+  incomingStock   IncomingStock? @relation(fields: [incomingStockId], references: [id])
+  materialId      Int            @unique
+  material        Material       @relation(fields: [materialId], references: [id])
+  capital         Int            @default(0)
+  stock           Int            @default(0)
+  totalCapital    Int            @default(0)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime?      @default(now()) @updatedAt
+  deleted         Boolean        @default(false)
+}
+
+model OpnameStock {
+  id                  Int                   @id @default(autoincrement())
+  opnameStockMaterial OpnameStockMaterial[]
+  opnameNumber        String                @unique
+  status              OpnameStatus          @default(DRAFT)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime?             @default(now()) @updatedAt
+  deleted             Boolean               @default(false)
+}
+
+enum OpnameStatus {
+  DRAFT
+  DONE
+}
+
+model OpnameStockMaterial {
+  id            Int          @id @default(autoincrement())
+  OpnameStock   OpnameStock? @relation(fields: [opnameStockId], references: [id])
+  opnameStockId Int?
+  materialId    Int          @unique
+  material      Material     @relation(fields: [materialId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime?    @default(now()) @updatedAt
+  deleted       Boolean      @default(false)
+}
+
+model WastedStock {
+  id                  Int                   @id @default(autoincrement())
+  wastedStockMaterial WastedStockMaterial[]
+  wastedNumber        String                @unique
+  tanggalMasuk        DateTime
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime?             @default(now()) @updatedAt
+  deleted             Boolean               @default(false)
+}
+
+model WastedStockMaterial {
+  id            Int          @id @default(autoincrement())
+  WastedStock   WastedStock? @relation(fields: [wastedStockId], references: [id])
+  wastedStockId Int?
+  materialId    Int          @unique
+  material      Material     @relation(fields: [materialId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime?    @default(now()) @updatedAt
+  deleted       Boolean      @default(false)
+}
+
 model Supplier {
   id        Int       @id @default(autoincrement())
   name      String
@@ -199,30 +299,6 @@ model Supplier {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @default(now()) @updatedAt
   deleted   Boolean   @default(false)
-}
-
-model Inventory {
-  id                Int                 @id @default(autoincrement())
-  inventoryMaterial InventoryMaterial[]
-  invoiceNumber     String              @unique
-  tanggalMasuk      DateTime
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime?           @default(now()) @updatedAt
-  deleted           Boolean             @default(false)
-}
-
-model InventoryMaterial {
-  id           Int        @id @default(autoincrement())
-  inventoryId  Int?
-  inventory    Inventory? @relation(fields: [inventoryId], references: [id])
-  materialId   Int        @unique
-  material     Material   @relation(fields: [materialId], references: [id])
-  capital      Int        @default(0)
-  stock        Int        @default(0)
-  totalCapital Int        @default(0)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @default(now()) @updatedAt
-  deleted      Boolean    @default(false)
 }
 
 // PRINTER

@@ -3,17 +3,20 @@ import { ProductEntity } from '../../product/entities/product.entity';
 
 @ObjectType()
 export class VariantEntity {
-  @Field(() => Int,{nullable:true})
+  @Field(() => Int, { nullable: true })
   id: number;
 
   @Field()
   productId?: number;
 
-  @Field(() => ProductEntity, {nullable:true})
+  @Field(() => ProductEntity, { nullable: true })
   product: ProductEntity;
 
   @Field(() => String)
   name: string;
+
+  @Field(() => String)
+  variantCode: string;
 
   @Field()
   price: number;

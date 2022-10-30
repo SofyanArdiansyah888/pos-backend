@@ -1,5 +1,6 @@
 import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, MinLength } from 'class-validator';
+import { UpdateVariantInput } from '../../variant/input/update-variant.input';
 import { CreateProductInput } from './create-product.input';
 
 @InputType()
@@ -10,57 +11,37 @@ export class UpdateProductInput extends PartialType(CreateProductInput) {
 
   @Field()
   @IsNotEmpty()
-  @MinLength(2)
-  name:string
+  @MinLength(3)
+  name: string;
+
+  @Field(() => [UpdateVariantInput])
+  variants: UpdateVariantInput[];
+
+  @Field()
+  @IsNumber()
+  categoryId: number;
+
+  @Field()
+  description: string;
 
   @Field()
   @IsNotEmpty()
-  productNumber:string
+  photo: string;
 
   @Field()
-  category:string
-
-  @Field()
-  brand:string
-  
-  @Field()
   @IsNotEmpty()
-  photo:string
-   
-  @Field()
-  @IsNotEmpty()
-  favourite:boolean
+  isFavourite: boolean;
 
   @Field()
   @IsNotEmpty()
   @IsNumber()
-  price:number
+  price: number;
 
   @Field()
   @IsNotEmpty()
-  @IsNumber()
-  stock:number
+  isStock: boolean;
 
   @Field()
   @IsNotEmpty()
-  @IsNumber()
-  capital:number
-
-  @Field()
-  code:string
-
-  @Field()
-  @IsNotEmpty()
-  isStock:boolean
-
-  @Field()
-  @IsNotEmpty()
-  @IsNumber()
-  minimalStock:number
-
-  @Field()
-  @IsNotEmpty()
-  uom:string
-
-
+  uom: string;
 }

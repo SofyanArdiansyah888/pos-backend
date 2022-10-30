@@ -48,6 +48,7 @@ type VariantEntity {
   productId: Int!
   product: ProductEntity
   name: String!
+  variantCode: String!
   price: Int!
   capital: Int!
   code: String!
@@ -60,21 +61,18 @@ type VariantEntity {
 type ProductEntity {
   id: Int!
   variantId: Int!
-  variant: [VariantEntity!]
-  productNumber: String!
-  name: String!
-  category: String!
-  brand: String!
-  photo: String!
-  favourite: Boolean!
-  price: Int!
-  capital: Int!
   code: String!
+  variants: [VariantEntity!]
+  name: String!
+  category: CategoryEntity
+  description: String!
+  photo: String!
+  isFavourite: Boolean!
+  price: Int!
   isStock: Boolean!
-  minimalStock: Int!
   uom: String!
   createdAt: DateTime!
-  updateddAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type TaxEntity {
@@ -133,15 +131,40 @@ type TableEntity {
   updatedAt: DateTime!
 }
 
+type StockMaterialEntity {
+  id: Int!
+  startStock: Int!
+  inStock: Int!
+  sellStock: Int!
+  endStock: Int!
+  uom: String!
+  material: MaterialEntity
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type IncomingStock {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type WastedStock {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type OpnameStock {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   categories(findCategoryInput: FindCategoryInput): [CategoryEntity!]
   category(id: Int!): CategoryEntity!
   taxes: [TaxEntity!]!
   tax(id: Int!): TaxEntity!
-  products: [ProductEntity!]!
+  products(findProductInput: FindProductInput): [ProductEntity!]
   product(id: Int!): ProductEntity!
-  variants: [VariantEntity!]
-  variant(id: Int!): VariantEntity
   orderProduct(id: Int!): OrderProductEntity!
   users(findUserInput: FindUserInput): [UserEntity!]
   user(id: Int!): UserEntity!
@@ -153,9 +176,21 @@ type Query {
   printer(id: Int!): PrinterEntity!
   tables(findTableInput: FindTableInput): [TableEntity!]
   table(id: Int!): TableEntity!
+  stockMaterials(findStockMaterialInput: FindStockMaterialInput): [StockMaterialEntity!]!
+  stockMaterial(id: Int!): StockMaterialEntity!
+  incomingStock(id: Int!): IncomingStock!
+  wastedStock(id: Int!): WastedStock!
+  opnameStock(id: Int!): OpnameStock!
 }
 
 input FindCategoryInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
+input FindProductInput {
   take: Int!
   skip: Int!
   cursor: Int!
@@ -197,6 +232,13 @@ input FindTableInput {
   filter: String!
 }
 
+input FindStockMaterialInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
 type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryEntity!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryEntity!
@@ -204,12 +246,9 @@ type Mutation {
   createTax(createTaxInput: CreateTaxInput!): TaxEntity!
   updateTax(updateTaxInput: UpdateTaxInput!): TaxEntity!
   deleteTax(id: DeleteTaxInput!): TaxEntity!
-  createProduct(createProductInput: CreateProductInput!): ProductEntity!
+  createProduct(createProductInput: CreateProductInput!): ProductEntity
   updateProduct(updateProductInput: UpdateProductInput!): ProductEntity!
   deleteProduct(id: DeleteProductInput!): ProductEntity!
-  createVariant(createVariantInput: CreateVariantInput!): VariantEntity!
-  updateVariant(updateVariantInput: UpdateVariantInput!): VariantEntity!
-  deleteVariant(id: Int!): VariantEntity!
   updateOrder(updateOrderInput: UpdateOrderInput!): OrderEntity!
   createOrderProduct(createOrderProductInput: CreateOrderProductInput!): OrderProductEntity!
   updateOrderProduct(updateOrderProductInput: UpdateOrderProductInput!): OrderProductEntity!
@@ -231,6 +270,16 @@ type Mutation {
   createTable(createTableInput: CreateTableInput!): TableEntity!
   updateTable(updateTableInput: UpdateTableInput!): TableEntity!
   deleteTable(id: DeleteTableInput!): TableEntity!
+  addStockMaterial(addStockMaterialInput: AddStockMaterialInput!): StockMaterialEntity
+  createIncomingStock(createIncomingStockInput: CreateIncomingStockInput!): IncomingStock!
+  updateIncomingStock(updateIncomingStockInput: UpdateIncomingStockInput!): IncomingStock!
+  removeIncomingStock(id: Int!): IncomingStock!
+  createWastedStock(createWastedStockInput: CreateWastedStockInput!): WastedStock!
+  updateWastedStock(updateWastedStockInput: UpdateWastedStockInput!): WastedStock!
+  removeWastedStock(id: Int!): WastedStock!
+  createOpnameStock(createOpnameStockInput: CreateOpnameStockInput!): OpnameStock!
+  updateOpnameStock(updateOpnameStockInput: UpdateOpnameStockInput!): OpnameStock!
+  removeOpnameStock(id: Int!): OpnameStock!
 }
 
 input CreateCategoryInput {
@@ -263,62 +312,43 @@ input DeleteTaxInput {
 
 input CreateProductInput {
   name: String!
-  category: String!
-  brand: String!
+  variants: [CreateVariantInput!]!
+  categoryId: Int!
+  description: String!
   photo: String!
-  favourite: Boolean!
+  isFavourite: Boolean!
   price: Int!
-  stock: Int!
-  capital: Int!
-  code: String!
   isStock: Boolean!
-  minimalStock: Int!
   uom: String!
-}
-
-input UpdateProductInput {
-  name: String!
-  category: String!
-  brand: String!
-  photo: String!
-  favourite: Boolean!
-  price: Int!
-  stock: Int!
-  capital: Int!
-  code: String!
-  isStock: Boolean!
-  minimalStock: Int!
-  uom: String!
-  id: Int!
-  productNumber: String!
-}
-
-input DeleteProductInput {
-  id: Int!
 }
 
 input CreateVariantInput {
   name: String!
-  productId: Int!
   price: Int!
-  capital: Int!
-  code: String!
+  variantCode: String
+}
+
+input UpdateProductInput {
+  name: String!
+  variants: [UpdateVariantInput!]!
+  categoryId: Int!
+  description: String!
+  photo: String!
+  isFavourite: Boolean!
+  price: Int!
   isStock: Boolean!
-  stock: Int!
-  minimalStock: Int!
   uom: String!
+  id: Int!
 }
 
 input UpdateVariantInput {
   name: String!
-  productId: Int!
   price: Int!
-  capital: Int!
-  code: String!
-  isStock: Boolean!
-  stock: Int!
-  minimalStock: Int!
-  uom: String!
+  variantCode: String
+  id: Int!
+}
+
+input DeleteProductInput {
   id: Int!
 }
 
@@ -441,5 +471,47 @@ input UpdateTableInput {
 }
 
 input DeleteTableInput {
+  id: Int!
+}
+
+input AddStockMaterialInput {
+  materialId: Int!
+  startStock: Int!
+  inStock: Int!
+  sellStock: Int!
+  endStock: Int!
+  uom: String!
+}
+
+input CreateIncomingStockInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateIncomingStockInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateWastedStockInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateWastedStockInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateOpnameStockInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateOpnameStockInput {
+  """Example field (placeholder)"""
+  exampleField: Int
   id: Int!
 }

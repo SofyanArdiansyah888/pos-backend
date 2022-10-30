@@ -18,6 +18,10 @@ import { CustomerModule } from './customer/customer.module';
 import { MaterialModule } from './material/material.module';
 import { PrinterModule } from './printer/printer.module';
 import { TableModule } from './table/table.module';
+import { StockMaterialModule } from './stock-material/stock-material.module';
+import { IncomingStockModule } from './incoming-stock/incoming-stock.module';
+import { WastedStockModule } from './wasted-stock/wasted-stock.module';
+import { OpnameStockModule } from './opname-stock/opname-stock.module';
 
 @Module({
   imports: [
@@ -46,6 +50,10 @@ import { TableModule } from './table/table.module';
     MaterialModule,
     PrinterModule,
     TableModule,
+    StockMaterialModule,
+    IncomingStockModule,
+    WastedStockModule,
+    OpnameStockModule,
   ],
   controllers: [AppController],
   providers: [AppService],

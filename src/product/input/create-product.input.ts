@@ -1,56 +1,49 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
+import { VariantEntity } from 'src/variant/entities/variant.entity';
+import { CreateVariantInput } from '../../variant/input/create-variant.input';
 
 @InputType()
 export class CreateProductInput {
   @Field()
   @IsNotEmpty()
-  @MinLength(2)
-  name:string
+  @MinLength(3)
+  name: string;
+
+  @Field(() => [CreateVariantInput])
+  variants: CreateVariantInput[];
 
   @Field()
-  category:string
+  @IsNumber()
+  categoryId: number;
 
   @Field()
-  brand:string
-  
+  description: string;
+
   @Field()
   @IsNotEmpty()
-  photo:string
-   
+  photo: string;
+
   @Field()
   @IsNotEmpty()
-  favourite:boolean
+  isFavourite: boolean;
 
   @Field()
   @IsNotEmpty()
   @IsNumber()
-  price:number
+  price: number;
 
   @Field()
   @IsNotEmpty()
-  @IsNumber()
-  stock:number
+  isStock: boolean;
 
   @Field()
   @IsNotEmpty()
-  @IsNumber()
-  capital:number
-
-  @Field()
-  code:string
-
-  @Field()
-  @IsNotEmpty()
-  isStock:boolean
-
-  @Field()
-  @IsNotEmpty()
-  @IsNumber()
-  minimalStock:number
-
-  @Field()
-  @IsNotEmpty()
-  uom:string
-
+  uom: string;
 }

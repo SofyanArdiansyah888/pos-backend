@@ -3,8 +3,6 @@ import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
 
 @InputType()
 export class CreateVariantInput {
-
-
   @Field()
   @IsNotEmpty()
   name: string;
@@ -12,38 +10,8 @@ export class CreateVariantInput {
   @Field()
   @IsNotEmpty()
   @IsNumber()
-  productId:number
-
-  @Field()
-  @IsNotEmpty()
-  @IsNumber()
   price: number;
 
-  @Field()
-  @IsNotEmpty()
-  @IsNumber()
-  capital: number;
-
-  @Field()
-  @IsNotEmpty()
-  code: string;
-
-  @Field()
-  @IsNotEmpty()
-  @IsBoolean()
-  isStock: boolean;
-
-  @Field()
-  @IsNotEmpty()
-  @IsNumber()
-  stock: number;
-
-  @Field()
-  @IsNotEmpty()
-  @IsNumber()
-  minimalStock: number;
-
-  @Field()
-  @IsNotEmpty()
-  uom: string;
+  @Field({ nullable: true })
+  variantCode: string;
 }
