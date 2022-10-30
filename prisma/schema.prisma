@@ -234,7 +234,7 @@ model IncomingStockMaterial {
   id              Int            @id @default(autoincrement())
   incomingStockId Int?
   incomingStock   IncomingStock? @relation(fields: [incomingStockId], references: [id])
-  materialId      Int            @unique
+  materialId      Int            
   material        Material       @relation(fields: [materialId], references: [id])
   capital         Int            @default(0)
   stock           Int            @default(0)

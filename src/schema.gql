@@ -143,9 +143,19 @@ type StockMaterialEntity {
   updatedAt: DateTime!
 }
 
-type IncomingStock {
-  """Example field (placeholder)"""
-  exampleField: Int!
+type IncomingStockMaterialEntity {
+  incomingStockId: Int!
+  materialId: Int!
+  capital: Int!
+  stock: Int!
+  totalCapital: Int!
+}
+
+type IncomingStockEntity {
+  id: Int!
+  invoiceNumber: String
+  tanggalMasuk: DateTime!
+  incomingStockMaterial: [IncomingStockMaterialEntity!]
 }
 
 type WastedStock {
@@ -178,7 +188,7 @@ type Query {
   table(id: Int!): TableEntity!
   stockMaterials(findStockMaterialInput: FindStockMaterialInput): [StockMaterialEntity!]!
   stockMaterial(id: Int!): StockMaterialEntity!
-  incomingStock(id: Int!): IncomingStock!
+  incomingStocks(findProductInput: FindIncomingStockInput): [IncomingStockEntity!]!
   wastedStock(id: Int!): WastedStock!
   opnameStock(id: Int!): OpnameStock!
 }
@@ -239,6 +249,13 @@ input FindStockMaterialInput {
   filter: String!
 }
 
+input FindIncomingStockInput {
+  take: Int!
+  skip: Int!
+  cursor: Int!
+  filter: String!
+}
+
 type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryEntity!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryEntity!
@@ -271,9 +288,7 @@ type Mutation {
   updateTable(updateTableInput: UpdateTableInput!): TableEntity!
   deleteTable(id: DeleteTableInput!): TableEntity!
   addStockMaterial(addStockMaterialInput: AddStockMaterialInput!): StockMaterialEntity
-  createIncomingStock(createIncomingStockInput: CreateIncomingStockInput!): IncomingStock!
-  updateIncomingStock(updateIncomingStockInput: UpdateIncomingStockInput!): IncomingStock!
-  removeIncomingStock(id: Int!): IncomingStock!
+  createIncomingStock(createIncomingStockInput: CreateIncomingStockInput!): IncomingStockEntity!
   createWastedStock(createWastedStockInput: CreateWastedStockInput!): WastedStock!
   updateWastedStock(updateWastedStockInput: UpdateWastedStockInput!): WastedStock!
   removeWastedStock(id: Int!): WastedStock!
@@ -484,14 +499,16 @@ input AddStockMaterialInput {
 }
 
 input CreateIncomingStockInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  invoiceNumber: String!
+  createIncomingStockMaterialInput: [CreateIncomingStockMaterialInput!]!
+  tanggalMasuk: DateTime!
 }
 
-input UpdateIncomingStockInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreateIncomingStockMaterialInput {
+  materialId: Int!
+  capital: Int!
+  stock: Int!
+  totalCapital: Int!
 }
 
 input CreateWastedStockInput {

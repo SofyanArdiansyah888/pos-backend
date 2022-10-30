@@ -1,26 +1,70 @@
 import { Injectable } from '@nestjs/common';
-import { CreateIncomingStockInput } from './dto/create-incoming-stock.input';
-import { UpdateIncomingStockInput } from './dto/update-incoming-stock.input';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { IncomingStockEntity } from './entities/incoming-stock.entity';
+import { CreateIncomingStockInput } from './input/create-incoming-stock.input';
+import { UpdateIncomingStockInput } from './input/update-incoming-stock.input';
 
 @Injectable()
 export class IncomingStockService {
-  create(createIncomingStockInput: CreateIncomingStockInput) {
-    return 'This action adds a new incomingStock';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(data: CreateIncomingStockInput): Promise<IncomingStockEntity> {
+    const incomingStock = { ...data };
+    delete incomingStock.createIncomingStockMaterialInput;
+    return await this.prisma.incomingStock.create({
+      data: {
+        ...incomingStock,
+        incomingStockMaterial: {
+          create: data.createIncomingStockMaterialInput,
+        },
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all incomingStock`;
+  async findAll(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.IncomingStockWhereUniqueInput;
+    where?: Prisma.IncomingStockWhereInput;
+    orderBy?: Prisma.IncomingStockOrderByWithRelationInput;
+  }) {
+    return await this.prisma.incomingStock.findMany({
+      ...params,
+      include: {
+        incomingStockMaterial: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} incomingStock`;
-  }
+  // findOne(where: Prisma.IncomingStockWhereUniqueInput) {
+  //   return this.prisma.incomingStock.findUnique({
+  //     where,
+  //     include: {
+  //       incomingStockMaterial: true,
+  //     },
+  //   });
+  // }
 
-  update(id: number, updateIncomingStockInput: UpdateIncomingStockInput) {
-    return `This action updates a #${id} incomingStock`;
-  }
+  // update(params: {
+  //   where: Prisma.IncomingStockWhereUniqueInput;
+  //   data: UpdateIncomingStockInput;
+  // }) {
+  //   const { variants, product } = this.sanitizeUpdateInput(params.data);
 
-  remove(id: number) {
-    return `This action removes a #${id} incomingStock`;
+  //   // return this.prisma.product.update({
+  //   //   ...product,
+
+  //   //   include: {
+  //   //     variants: true,
+  //   //     category: true,
+  //   //   },
+  //   // });
+  // }
+
+  remove(where: Prisma.IncomingStockWhereUniqueInput) {
+    return this.prisma.incomingStock.delete({
+      where,
+    });
   }
 }
